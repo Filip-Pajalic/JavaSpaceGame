@@ -19,7 +19,7 @@ public class Ship {
         dimension = new Vector2(20,20);
         hitbox = new Hitbox(position,dimension);
         velocity = 0;
-        thrust = 80.0f;
+        thrust = 40.0f;
         acceleration = 0.0f;
         power = false;
     }
@@ -38,6 +38,7 @@ public class Ship {
 
     public void setPositionY(float positionY) {
         this.position.y = positionY;
+        this.hitbox.updateHitboxPosition(position);
     }
 
     public float getThrust() {

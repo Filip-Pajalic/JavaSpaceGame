@@ -94,6 +94,11 @@ public class GameScreen implements Screen {
         renderBackground(deltaTime);
 
         batch.end();
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(ship.hitbox.getHitbox().x, ship.hitbox.getHitbox().y, ship.hitbox.getHitbox().width, ship.hitbox.getHitbox().height);
+        shapeRenderer.end();
         detectInput(deltaTime);
         //detectCollision(deltaTime);
 
@@ -148,11 +153,6 @@ public class GameScreen implements Screen {
             fontinverval = 0;
         }
         fontinverval++;
-        /*shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(ship.hitbox.getHitbox().x, ship.hitbox.getHitbox().y, ship.hitbox.getHitbox().width, ship.hitbox.getHitbox().height);
-        shapeRenderer.end();*/
 
 
 
