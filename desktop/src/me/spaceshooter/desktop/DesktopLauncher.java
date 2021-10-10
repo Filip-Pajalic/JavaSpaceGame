@@ -8,7 +8,7 @@ import me.spaceshooter.SpaceShooterGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode((int)(320*1.5),(int)(640*1.5));
+		config.setWindowedMode((int)(320),(int)(640));
 		new Lwjgl3Application(new SpaceShooterGame(), config);
 	}
 }

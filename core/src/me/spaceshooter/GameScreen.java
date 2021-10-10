@@ -82,17 +82,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-        //GL20 gl = Gdx.gl;
-        //gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //ScreenUtils.clear(0, 0, 0.2f, 1);
         batch.enableBlending();
         batch.begin();
-
-
-
-
         renderBackground(deltaTime);
-
         batch.end();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -100,10 +93,6 @@ public class GameScreen implements Screen {
         shapeRenderer.rect(ship.hitbox.getHitbox().x, ship.hitbox.getHitbox().y, ship.hitbox.getHitbox().width, ship.hitbox.getHitbox().height);
         shapeRenderer.end();
         detectInput(deltaTime);
-        //detectCollision(deltaTime);
-
-
-
     }
 
     private void detectInput(float deltaTime) {
