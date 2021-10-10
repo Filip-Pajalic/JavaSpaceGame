@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Ship {
 
-    private float movementSpeed, velocity, acceleration, accelerationSideways, thrust, thrustSideways, velocitySideways;
+    private float movementSpeed, velocity, acceleration, accelerationSideways, thrust, thrustSideways, velocitySideways, velocityMax;
     private Vector2 position, dimension;
     private Texture shipTexture, shipPoweredTexture;
     public Hitbox hitbox;
@@ -15,11 +15,12 @@ public class Ship {
         movementSpeed = 100;
         shipTexture= new Texture("ship1.png");
         shipPoweredTexture = new Texture("ship1powered.png");
-        position = new Vector2(320/2-20/2,10);
-        dimension = new Vector2(20,20);
+        position = new Vector2(320-20,10);
+        dimension = new Vector2(40,40);
         hitbox = new Hitbox(position,dimension);
         velocity = 0;
         velocitySideways = 0;
+        velocityMax = 80.0f;
         thrust = 40.0f;
         thrustSideways = 40.0f;
         acceleration = 0.0f;
@@ -96,7 +97,10 @@ public class Ship {
     }
 
     public void setVelocity(float velocity) {
+        //if(this.velocity<this.velocityMax) {
         this.velocity = velocity;
+        //}else
+        //    this.velocity = velocityMax;
     }
 
     public float getyPosition() {
@@ -157,7 +161,14 @@ public class Ship {
     }
 
     public void setVelocitySideways(float velocitySideways) {
+        //if(this.velocitySideways<this.velocityMax)
         this.velocitySideways = velocitySideways;
+        //else
+
+        /*if(this.velocitySideways> -this.velocityMax)
+            this.velocitySideways = velocitySideways;
+        else
+            this.velocitySideways = -this.velocityMax;*/
     }
 
     public float getAccelerationSideways() {
