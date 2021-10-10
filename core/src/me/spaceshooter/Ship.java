@@ -5,11 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Ship {
 
-    private float movementSpeed, velocity, acceleration, thrust;
+    private float movementSpeed, velocity, acceleration, accelerationSideways, thrust, thrustSideways, velocitySideways;
     private Vector2 position, dimension;
     private Texture shipTexture, shipPoweredTexture;
     public Hitbox hitbox;
-    private boolean power;
+    private boolean power, powerLeft, powerRight;
 
     public Ship(){
         movementSpeed = 100;
@@ -19,8 +19,11 @@ public class Ship {
         dimension = new Vector2(20,20);
         hitbox = new Hitbox(position,dimension);
         velocity = 0;
+        velocitySideways = 0;
         thrust = 40.0f;
+        thrustSideways = 40.0f;
         acceleration = 0.0f;
+        accelerationSideways = 0.0f;
         power = false;
     }
 
@@ -41,12 +44,27 @@ public class Ship {
         this.hitbox.updateHitboxPosition(position);
     }
 
+    public void setPositionX(float positionX) {
+        this.position.x = positionX;
+        this.hitbox.updateHitboxPosition(position);
+    }
+
     public float getThrust() {
         if (this.isPower()){
             return thrust;
         }
         return 0.0f;
     }
+
+    public float getThrustSideways() {
+        if (this.isPowerRight()){
+            return thrustSideways;
+        }else if (this.isPowerLeft()){
+            return -thrustSideways;
+        }
+        return 0.0f;
+    }
+
 
     public void setThrust(float thrust) {
         this.thrust = thrust;
@@ -106,13 +124,47 @@ public class Ship {
         this.dimension.x = sizex;
     }
 
-
-
     public float getSizey() {
         return dimension.y;
     }
 
     public void setSizey(float sizey) {
         this.dimension.y = sizey;
+    }
+
+    public boolean isPowerLeft() {
+        return powerLeft;
+    }
+
+    public void setPowerLeft(boolean powerLeft) {
+        this.powerLeft = powerLeft;
+    }
+
+    public boolean isPowerRight() {
+        return powerRight;
+    }
+
+    public void setPowerRight(boolean powerRight) {
+        this.powerRight = powerRight;
+    }
+
+    public void setThrustSideways(float thrustSideways) {
+        this.thrustSideways = thrustSideways;
+    }
+
+    public float getVelocitySideways() {
+        return velocitySideways;
+    }
+
+    public void setVelocitySideways(float velocitySideways) {
+        this.velocitySideways = velocitySideways;
+    }
+
+    public float getAccelerationSideways() {
+        return accelerationSideways;
+    }
+
+    public void setAccelerationSideways(float accelerationSideways) {
+        this.accelerationSideways = accelerationSideways;
     }
 }

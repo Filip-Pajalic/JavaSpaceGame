@@ -27,23 +27,17 @@ public class GameScreen implements Screen {
 
     //graphics
     private SpriteBatch batch;
-    private Texture[] backgrounds;
+    private Texture background;
 
-    //timing
-    private float[] backgroundOffsets = {0,0};
-    private float backgroundMaxScrollingSpeed;
-
-    //world parameters
+   //world parameters
     private final int WORLD_WIDTH = 320;
     private final int WORLD_HEIGHT = 640;
 
     private Ship ship;
-    private float velocity;
+
     private BitmapFont font;
     private float gravityConstant = 20.1f;
-    private float acceleration = 10.0f;
-    private float totalAcceleration = 0.0f;
-    float velocityY = 0.0f;
+
     private ShapeRenderer shapeRenderer;
     private int fontinverval = 5;
     private String fonttext, fonttext2;
@@ -52,37 +46,25 @@ public class GameScreen implements Screen {
     GameScreen(){
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
-
-        backgrounds = new Texture[2];
-
-        backgrounds[0] = new Texture("background.png");
-        //backgrounds[1] = new Texture("stars.png");
-
-        backgroundMaxScrollingSpeed = (float)WORLD_HEIGHT/4;
-
+        background = new Texture("background.png");
         batch = new SpriteBatch();
         ship = new Ship();
-        velocity = 0.0f;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
-
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.borderColor = Color.BLACK;
         parameter.borderGamma = 255;
         parameter.borderWidth = 1;
         parameter.size = 10;
         font = generator.generateFont(parameter);
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        generator.dispose();
         fonttext2  = "";
         fonttext = "";
         shapeRenderer = new ShapeRenderer();
-
-
     }
 
 
     @Override
     public void render(float deltaTime) {
-        //ScreenUtils.clear(0, 0, 0.2f, 1);
         batch.enableBlending();
         batch.begin();
         renderBackground(deltaTime);
@@ -93,6 +75,7 @@ public class GameScreen implements Screen {
         shapeRenderer.rect(ship.hitbox.getHitbox().x, ship.hitbox.getHitbox().y, ship.hitbox.getHitbox().width, ship.hitbox.getHitbox().height);
         shapeRenderer.end();
         detectInput(deltaTime);
+        detectCollision(deltaTime);
     }
 
     private void detectInput(float deltaTime) {
@@ -103,64 +86,76 @@ public class GameScreen implements Screen {
         else{
             ship.setPower(false);
         }
-        float yChange;
-
-        yChange = ship.getVelocity()*deltaTime;
-        if (ship.getyPosition() <0 && !ship.isPower()){
-            ship.setPositionY(0f);
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            ship.setPowerLeft(true);
         }
-        else if(ship.getyPosition()>WORLD_HEIGHT-ship.getSizey()){
-
-            ship.setPositionY(WORLD_HEIGHT-ship.getSizey());
-            ship.setVelocity(0.0f);
-
-        }else{
-            if(ship.isPower() || ship.getyPosition()>0) {
-                ship.setAcceleration((ship.getThrust() - gravityConstant) * deltaTime);
-                ship.setVelocity(ship.getVelocity() + ship.getAcceleration());
-            }else
-            {
-                ship.setAcceleration(0);
-                ship.setVelocity(0);
-            }
-            ship.translate(0, yChange);
+        else{
+            ship.setPowerLeft(false);
         }
-
-
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            ship.setPowerRight(true);
+        }
+        else{
+            ship.setPowerRight(false);
+        }
     }
 
     private void renderBackground(float deltaTime){
-        batch.draw(backgrounds[0],0,0,WORLD_WIDTH,WORLD_HEIGHT);
+        batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         batch.draw(ship.getShipTexture(), ship.getxPosition(), ship.getyPosition(),ship.getSizex(),ship.getSizey());
-        font.draw(batch, fonttext, 10, 10);
-        font.draw(batch,fonttext2 , 10, 25);
-        font.draw(batch,"Position x: " + String.valueOf((int)ship.getxPosition()) , 10, 40);
-        font.draw(batch,"Position y: " + String.valueOf((int)ship.getyPosition()) , 10, 55);
+        font.draw(batch, fonttext, 10, 600);
+        font.draw(batch,fonttext2 , 10, 575);
+        font.draw(batch,"Position x: " + String.valueOf((int)ship.getxPosition()) , 10, 550);
+        font.draw(batch,"Position y: " + String.valueOf((int)ship.getyPosition()) , 10, 525);
+        font.draw(batch,"AccelerationSideways: " + String.valueOf(ship.getAccelerationSideways()) , 10, 500);
+        font.draw(batch,"VelocitySideways: " + String.valueOf(ship.getVelocitySideways()) , 10, 475);
         if(fontinverval == 5) {
             fonttext = "Acceleration: " + String.valueOf(ship.getAcceleration());
             fonttext2 = "Velocity: " + String.valueOf(ship.getVelocity());
             fontinverval = 0;
         }
         fontinverval++;
-
-
-
     }
 
     public void detectCollision(float deltaTime){
+        float yChange, xChange;
 
-        float dy = ship.getVelocity();
-        
+        if(ship.isPower() || ship.getyPosition()>0) {
+            ship.setAcceleration((ship.getThrust() - gravityConstant) * deltaTime);
+            ship.setVelocity(ship.getVelocity() + ship.getAcceleration());
+
+        }
+        if(ship.isPower() && (ship.isPowerLeft() || ship.isPowerRight()  ) ) {
+
+            ship.setAccelerationSideways(ship.getThrustSideways() * deltaTime);
+            ship.setVelocitySideways(ship.getVelocitySideways() + ship.getAccelerationSideways());
+        }
         if (ship.getyPosition() <0){
-            dy = -dy;
-            ship.translate(0f,0f);
+            ship.setPositionY(0f);
+            ship.setAcceleration(0.0f);
+            ship.setVelocity(0.0f);
+            ship.setVelocitySideways(0.0f);
+            ship.setAccelerationSideways(0.0f);
         }
-        else if(ship.getyPosition()>WORLD_HEIGHT){
-            dy = -dy;
-            //ship.translate(0f,WORLD_HEIGHT-ship.getSizey());
-            ship.translate(0f,0f);
-
+        if(ship.getyPosition()>WORLD_HEIGHT-ship.getSizey()){
+            ship.setPositionY(WORLD_HEIGHT-ship.getSizey());
+            ship.setVelocity(0.0f);
+            ship.setAccelerationSideways(0.0f);
         }
+        if(ship.getxPosition()<0){
+            System.out.printf("hello");
+            ship.setPositionX(0);
+            ship.setVelocitySideways(0.0f);
+            ship.setAccelerationSideways(0.0f);
+        }
+        if(ship.getxPosition()>WORLD_WIDTH-ship.getSizex()){
+            ship.setPositionX(WORLD_WIDTH-ship.getSizex());
+            ship.setVelocitySideways(0.0f);
+            ship.setAccelerationSideways(0.0f);
+        }
+        yChange = ship.getVelocity()*deltaTime;
+        xChange = ship.getVelocitySideways()*deltaTime;
+        ship.translate(xChange, yChange);
     }
 
     @Override
@@ -189,7 +184,6 @@ public class GameScreen implements Screen {
         font.dispose();
         batch.dispose();
         shapeRenderer.dispose();
-
     }
     @Override
     public void show() {
