@@ -1,24 +1,17 @@
 package me.spaceshooter;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.Emitter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -26,10 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Templates;
-
 import me.spaceshooter.game.GameObject;
-import me.spaceshooter.game.components.GravityComponent;
+import me.spaceshooter.game.components.PhysicsComponent;
 
 public class GameScreen implements Screen {
 
@@ -84,7 +75,7 @@ public class GameScreen implements Screen {
         debug = false;
         shapeRenderer = new ShapeRenderer();
         this.gameObject = new GameObject("Ship");
-        this.gameObject.addComponent(new GravityComponent(10));
+        this.gameObject.addComponent(new PhysicsComponent());
         addGameObjectToScreen(this.gameObject);
         start();
     }
