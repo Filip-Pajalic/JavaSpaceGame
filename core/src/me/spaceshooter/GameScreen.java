@@ -1,5 +1,6 @@
 package me.spaceshooter;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -22,7 +23,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.transform.Templates;
+
+import me.spaceshooter.game.GameObject;
+import me.spaceshooter.game.components.GravityComponent;
 
 public class GameScreen implements Screen {
 
@@ -37,25 +44,33 @@ public class GameScreen implements Screen {
    //world parameters
     private final int WORLD_WIDTH = 320*2;
     private final int WORLD_HEIGHT = 640*2;
+    private float gravityConstant = 20.1f;
 
-    private Ship ship;
+
+
+    private boolean isRunning = false;
 
     private BitmapFont font;
-    private float gravityConstant = 20.1f;
+
+    private Ship ship = new Ship();
+
 
     private ShapeRenderer shapeRenderer;
     private int fontinverval = 5;
     private String fonttext, fonttext2;
-    private ParticleEffect motor1, motor2;
     private boolean debug;
-    private Array<ParticleEmitter> emitters;
+
+
+
+    private List<GameObject> gameObjectList = new ArrayList<>();
+    private GameObject gameObject;
 
     GameScreen(){
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
         background = new Texture("background.png");
         batch = new SpriteBatch();
-        ship = new Ship();
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.borderColor = Color.BLACK;
@@ -66,36 +81,29 @@ public class GameScreen implements Screen {
         generator.dispose();
         fonttext2  = "";
         fonttext = "";
-        shapeRenderer = new ShapeRenderer();
-        motor1 = new ParticleEffect();
-        motor1.load(Gdx.files.internal("particle.red"),Gdx.files.internal(""));
-
-        motor2 = new ParticleEffect();
-        motor2.load(Gdx.files.internal("particle.red"),Gdx.files.internal(""));
-
         debug = false;
-
-        emitters = motor1.getEmitters();
-
-
-
-        emitters.get(0).start();
-
-        //effect.draw(batch, Gdx.graphics.getDeltaTime());
+        shapeRenderer = new ShapeRenderer();
+        this.gameObject = new GameObject("Ship");
+        this.gameObject.addComponent(new GravityComponent(10));
+        addGameObjectToScreen(this.gameObject);
+        start();
     }
 
+    public void start(){
+        if(!isRunning){
+            for(GameObject gameObject: gameObjectList){
+                gameObject.start();
+            }
+        }
+    }
 
     @Override
     public void render(float deltaTime) {
+        this.isRunning = true;
         batch.enableBlending();
-        motor1.update(Gdx.graphics.getDeltaTime());
-        motor2.update(Gdx.graphics.getDeltaTime());
+
         batch.begin();
         renderBackground(deltaTime);
-
-        motor1.draw(batch);
-        motor2.draw(batch);
-        motor1.getEmitters().
 
 
         batch.end();
@@ -108,7 +116,9 @@ public class GameScreen implements Screen {
         }
         detectInput(deltaTime);
         detectCollision(deltaTime);
-
+        for(GameObject gameObject : this.gameObjectList){
+            gameObject.update(deltaTime);
+        }
     }
 
     private void detectInput(float deltaTime) {
@@ -136,10 +146,7 @@ public class GameScreen implements Screen {
     private void renderBackground(float deltaTime){
         batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
         batch.draw(ship.getShipTexture(), ship.getxPosition(), ship.getyPosition(),ship.getSizex(),ship.getSizey());
-        if(ship.isPower()) {
-            motor1.getEmitters().first().setPosition(ship.getxPosition() + 8, ship.getyPosition() + 3);
-            motor2.getEmitters().first().setPosition(ship.getxPosition() + 40 - 9, ship.getyPosition() + 3);
-        }
+
         if(debug) {
             font.draw(batch, fonttext, 10, 600);
             font.draw(batch, fonttext2, 10, 575);
@@ -195,6 +202,16 @@ public class GameScreen implements Screen {
         yChange = ship.getVelocity()*deltaTime;
         xChange = ship.getVelocitySideways()*deltaTime;
         ship.translate(xChange, yChange);
+    }
+
+    public void addGameObjectToScreen(GameObject gameObject){
+        if(!isRunning){
+            gameObjectList.add(gameObject);
+        }
+        else{
+            gameObjectList.add(gameObject);
+            gameObject.start();
+        }
     }
 
     @Override
