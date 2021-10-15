@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.spaceshooter.game.GameObject;
+import me.spaceshooter.game.ShipObject;
 import me.spaceshooter.game.components.PhysicsComponent;
 
 public class GameScreen implements Screen {
@@ -74,8 +75,7 @@ public class GameScreen implements Screen {
         fonttext = "";
         debug = false;
         shapeRenderer = new ShapeRenderer();
-        this.gameObject = new GameObject("Ship");
-        this.gameObject.addComponent(new PhysicsComponent());
+        gameObject = new ShipObject("ship");
         addGameObjectToScreen(this.gameObject);
         start();
     }
