@@ -1,7 +1,6 @@
 package me.spaceshooter.game.components;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 
@@ -9,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import me.spaceshooter.game.Component;
+import me.spaceshooter.game.core.Component;
 
 public class InputComponent extends Component {
 

@@ -1,4 +1,4 @@
-package me.spaceshooter.game;
+package me.spaceshooter.game.core;
 
 public abstract class Component {
 
@@ -9,4 +9,5 @@ public abstract class Component {
     }
 
     public abstract void update(float dt);
+
 }

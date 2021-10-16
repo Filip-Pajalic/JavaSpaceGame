@@ -19,9 +19,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.spaceshooter.game.GameObject;
-import me.spaceshooter.game.ShipObject;
-import me.spaceshooter.game.components.PhysicsComponent;
+import me.spaceshooter.game.core.GameObject;
+import me.spaceshooter.game.gameobjects.ShipObject;
 
 public class GameScreen implements Screen {
 

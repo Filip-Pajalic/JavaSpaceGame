@@ -1,4 +1,4 @@
-package me.spaceshooter.game;
+package me.spaceshooter.game.gameobjects;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,8 +9,9 @@ import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.ShipPhysicsComponent;
 import me.spaceshooter.game.components.VelocityComponent;
+import me.spaceshooter.game.core.GameObject;
 
-public class ShipObject extends GameObject{
+public class ShipObject extends GameObject {
 
 
     public ShipObject(String name) {

@@ -2,7 +2,7 @@ package me.spaceshooter.game.components;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import me.spaceshooter.game.Component;
+import me.spaceshooter.game.core.Component;
 
 public class GraphicsCompoment extends Component {
 

@@ -1,8 +1,10 @@
-package me.spaceshooter.game;
+package me.spaceshooter.game.core;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.spaceshooter.game.core.Component;
 
 public class GameObject {
     private String name;
