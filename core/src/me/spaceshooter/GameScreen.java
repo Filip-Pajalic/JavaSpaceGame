@@ -19,8 +19,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.spaceshooter.game.core.GameObject;
-import me.spaceshooter.game.gameobjects.ShipObject;
+import me.spaceshooter.game.core.Enitity;
+import me.spaceshooter.game.core.GameSystem;
+import me.spaceshooter.game.entities.ShipEntity;
+import me.spaceshooter.game.systems.Physics;
+
 
 public class GameScreen implements Screen {
 
@@ -38,7 +41,6 @@ public class GameScreen implements Screen {
     private float gravityConstant = 20.1f;
 
 
-
     private boolean isRunning = false;
 
     private BitmapFont font;
@@ -53,8 +55,9 @@ public class GameScreen implements Screen {
 
 
 
-    private List<GameObject> gameObjectList = new ArrayList<>();
-    private GameObject gameObject;
+    private List<Enitity> entityList = new ArrayList<>();
+    private Enitity entity;
+    private GameSystem physicsSystem;
 
     GameScreen(){
         camera = new OrthographicCamera();
@@ -74,15 +77,16 @@ public class GameScreen implements Screen {
         fonttext = "";
         debug = false;
         shapeRenderer = new ShapeRenderer();
-        gameObject = new ShipObject("ship");
-        addGameObjectToScreen(this.gameObject);
+        entity = new ShipEntity("ship");
+        addGameObjectToScreen(this.entity);
+        physicsSystem= new Physics(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
         start();
     }
 
     public void start(){
         if(!isRunning){
-            for(GameObject gameObject: gameObjectList){
-                gameObject.start();
+            for(Enitity entity : entityList){
+                entity.start();
             }
         }
     }
@@ -106,9 +110,10 @@ public class GameScreen implements Screen {
         }
         detectInput(deltaTime);
         detectCollision(deltaTime);
-        for(GameObject gameObject : this.gameObjectList){
-            gameObject.update(deltaTime);
+        for(Enitity entity : this.entityList){
+            entity.update(deltaTime);
         }
+        physicsSystem.update(entityList,deltaTime);
     }
 
     private void detectInput(float deltaTime) {
@@ -179,7 +184,6 @@ public class GameScreen implements Screen {
             ship.setAccelerationSideways(0.0f);
         }
         if(ship.getxPosition()<0){
-            System.out.printf("hello");
             ship.setPositionX(0);
             ship.setVelocitySideways(0.0f);
             ship.setAccelerationSideways(0.0f);
@@ -194,13 +198,13 @@ public class GameScreen implements Screen {
         ship.translate(xChange, yChange);
     }
 
-    public void addGameObjectToScreen(GameObject gameObject){
+    public void addGameObjectToScreen(Enitity enitity){
         if(!isRunning){
-            gameObjectList.add(gameObject);
+            entityList.add(entity);
         }
         else{
-            gameObjectList.add(gameObject);
-            gameObject.start();
+            entityList.add(entity);
+            entity.start();
         }
     }
 

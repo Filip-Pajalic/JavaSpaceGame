@@ -14,10 +14,6 @@ public class GraphicsCompoment extends Component {
 
     }
 
-    public void start(){
-
-    }
-
     public Texture getTexture() {
         return texture;
     }

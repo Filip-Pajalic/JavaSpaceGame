@@ -12,8 +12,6 @@ public class PositionComponent extends Component {
     @Override
     public void update(float dt) {
 
-
-
     }
 
     public void start(){
@@ -26,6 +24,11 @@ public class PositionComponent extends Component {
 
     public void setPosition(Vector2 position) {
         this.position = position;
+    }
+
+    public void translate(float xChange, float yChange){
+        this.position.x = this.position.x + xChange;
+        this.position.y = this.position.y + yChange;
     }
 
 
