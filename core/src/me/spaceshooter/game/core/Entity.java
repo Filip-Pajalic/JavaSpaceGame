@@ -4,10 +4,10 @@ package me.spaceshooter.game.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Enitity {
+public class Entity {
     private String name;
     private List<Component> componentList;
-    public Enitity(String name)
+    public Entity(String name)
     {
         componentList = new ArrayList<>();
         this.name = name;
@@ -37,7 +37,7 @@ public class Enitity {
 
     public  void addComponent(Component c){
         componentList.add(c);
-        c.enitity = this;
+        c.entity = this;
     }
 
     public void update(float dt){

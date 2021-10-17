@@ -3,69 +3,48 @@ package me.spaceshooter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.spaceshooter.game.core.Enitity;
+import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
+import me.spaceshooter.game.entities.BackgroundEntity;
 import me.spaceshooter.game.entities.ShipEntity;
-import me.spaceshooter.game.systems.Physics;
+
+import me.spaceshooter.game.systems.PhysicsSystem;
+import me.spaceshooter.game.systems.RenderSystem;
 
 
 public class GameScreen implements Screen {
 
-    //screen
-    private Camera camera;
-    private Viewport viewport;
-
-    //graphics
-    private SpriteBatch batch;
-    private Texture background;
-
    //world parameters
     private final int WORLD_WIDTH = 320*2;
     private final int WORLD_HEIGHT = 640*2;
-    private float gravityConstant = 20.1f;
+    private float gravityConstant = 0.1f;
 
+    enum LEVELS {
+        LEVEL1
+    }
 
     private boolean isRunning = false;
 
     private BitmapFont font;
 
     private Ship ship = new Ship();
-
-
-    private ShapeRenderer shapeRenderer;
-    private int fontinverval = 5;
-    private String fonttext, fonttext2;
     private boolean debug;
-
-
-
-    private List<Enitity> entityList = new ArrayList<>();
-    private Enitity entity;
+    private List<Entity> entityList = new ArrayList<>();
+    private Entity entity;
     private GameSystem physicsSystem;
+    private RenderSystem renderSystem;
 
     GameScreen(){
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
-        background = new Texture("background.png");
-        batch = new SpriteBatch();
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
+
+        /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.borderColor = Color.BLACK;
         parameter.borderGamma = 255;
@@ -74,18 +53,21 @@ public class GameScreen implements Screen {
         font = generator.generateFont(parameter);
         generator.dispose();
         fonttext2  = "";
-        fonttext = "";
+        fonttext = "";*/
         debug = false;
-        shapeRenderer = new ShapeRenderer();
+
+        entity = new BackgroundEntity("background", WORLD_WIDTH, WORLD_HEIGHT);
+        addGameObjectToScreen(this.entity);
         entity = new ShipEntity("ship");
         addGameObjectToScreen(this.entity);
-        physicsSystem= new Physics(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
+        physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
+        renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
         start();
     }
 
     public void start(){
         if(!isRunning){
-            for(Enitity entity : entityList){
+            for(Entity entity : entityList){
                 entity.start();
             }
         }
@@ -94,26 +76,9 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         this.isRunning = true;
-        batch.enableBlending();
-
-        batch.begin();
-        renderBackground(deltaTime);
-
-
-        batch.end();
-        if(debug) {
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            shapeRenderer.setColor(Color.RED);
-            shapeRenderer.rect(ship.hitbox.getHitbox().x, ship.hitbox.getHitbox().y, ship.hitbox.getHitbox().width, ship.hitbox.getHitbox().height);
-            shapeRenderer.end();
-        }
-        detectInput(deltaTime);
-        detectCollision(deltaTime);
-        for(Enitity entity : this.entityList){
-            entity.update(deltaTime);
-        }
+        renderSystem.update(entityList,deltaTime);
         physicsSystem.update(entityList,deltaTime);
+
     }
 
     private void detectInput(float deltaTime) {
@@ -139,10 +104,9 @@ public class GameScreen implements Screen {
     }
 
     private void renderBackground(float deltaTime){
-        batch.draw(background,0,0,WORLD_WIDTH,WORLD_HEIGHT);
-        batch.draw(ship.getShipTexture(), ship.getxPosition(), ship.getyPosition(),ship.getSizex(),ship.getSizey());
+     /*
 
-        if(debug) {
+       if(debug) {
             font.draw(batch, fonttext, 10, 600);
             font.draw(batch, fonttext2, 10, 575);
             font.draw(batch, "Position x: " + String.valueOf((int) ship.getxPosition()), 10, 550);
@@ -155,50 +119,10 @@ public class GameScreen implements Screen {
                 fontinverval = 0;
             }
             fontinverval++;
-        }
+        }*/
     }
 
-    public void detectCollision(float deltaTime){
-        float yChange, xChange;
-
-        if(ship.isPower() || ship.getyPosition()>0) {
-            ship.setAcceleration((ship.getThrust() - gravityConstant) * deltaTime);
-            ship.setVelocity(ship.getVelocity() + ship.getAcceleration());
-
-        }
-        if(ship.isPower() && (ship.isPowerLeft() || ship.isPowerRight()  ) ) {
-
-            ship.setAccelerationSideways(ship.getThrustSideways() * deltaTime);
-            ship.setVelocitySideways(ship.getVelocitySideways() + ship.getAccelerationSideways());
-        }
-        if (ship.getyPosition() <0){
-            ship.setPositionY(0f);
-            ship.setAcceleration(0.0f);
-            ship.setVelocity(0.0f);
-            ship.setVelocitySideways(0.0f);
-            ship.setAccelerationSideways(0.0f);
-        }
-        if(ship.getyPosition()>WORLD_HEIGHT-ship.getSizey()){
-            ship.setPositionY(WORLD_HEIGHT-ship.getSizey());
-            ship.setVelocity(0.0f);
-            ship.setAccelerationSideways(0.0f);
-        }
-        if(ship.getxPosition()<0){
-            ship.setPositionX(0);
-            ship.setVelocitySideways(0.0f);
-            ship.setAccelerationSideways(0.0f);
-        }
-        if(ship.getxPosition()>WORLD_WIDTH-ship.getSizex()){
-            ship.setPositionX(WORLD_WIDTH-ship.getSizex());
-            ship.setVelocitySideways(0.0f);
-            ship.setAccelerationSideways(0.0f);
-        }
-        yChange = ship.getVelocity()*deltaTime;
-        xChange = ship.getVelocitySideways()*deltaTime;
-        ship.translate(xChange, yChange);
-    }
-
-    public void addGameObjectToScreen(Enitity enitity){
+    public void addGameObjectToScreen(Entity entity){
         if(!isRunning){
             entityList.add(entity);
         }
@@ -210,8 +134,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width,height,true);
-        batch.setProjectionMatrix(camera.combined);
+        //GameSystem gs = GameSystem.cast(c)
+        /* kanske kan göra en cast här som i component istället*/
+        renderSystem.getViewport().update(width,height,true);
+        renderSystem.getBatch().setProjectionMatrix(renderSystem.getCamera().combined);
     }
 
     @Override
@@ -232,8 +158,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         font.dispose();
-        batch.dispose();
-        shapeRenderer.dispose();
+        renderSystem.dispose();
     }
     @Override
     public void show() {

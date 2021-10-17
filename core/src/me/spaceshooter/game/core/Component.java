@@ -2,7 +2,7 @@ package me.spaceshooter.game.core;
 
 public abstract class Component {
 
-    public Enitity enitity = null;
+    public Entity entity = null;
 
     public void start(){
 

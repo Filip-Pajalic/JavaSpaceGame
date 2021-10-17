@@ -7,13 +7,13 @@ import java.util.List;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.VelocityComponent;
-import me.spaceshooter.game.core.Enitity;
+import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
 
 
-public class Physics extends GameSystem {
+public class PhysicsSystem extends GameSystem {
 
-    private float gravityAcceleration;
+    private float gravityAcceleration =0.0f;
 
 
 
@@ -22,7 +22,7 @@ public class Physics extends GameSystem {
     private int maxPositionY = 0;
 
 
-    public Physics(float gravityAcceleration, int maxPositionX, int maxPositionY){
+    public PhysicsSystem(float gravityAcceleration, int maxPositionX, int maxPositionY){
         this.gravityAcceleration = gravityAcceleration;
         this.maxPositionX = maxPositionX;
         this.maxPositionY = maxPositionY;
@@ -30,9 +30,9 @@ public class Physics extends GameSystem {
     }
 
     @Override
-    public void update(List<Enitity> entityList , float dt) {
+    public void update(List<Entity> entityList , float dt) {
 
-        for(Enitity entity: entityList) {
+        for(Entity entity: entityList) {
 
             if (entity.getComponent(InputComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
                 Vector2 position = entity.getComponent(PositionComponent.class).getPosition();
@@ -47,15 +47,24 @@ public class Physics extends GameSystem {
 
                 if (position.y < 0) {
                     position.y = 0;
+                    velocity.y = 0.0f;
+                    acceleration.y = 0.0f;
+                    velocity.x = 0.0f;
+                    acceleration.x = 0.0f;
                 }
                 if (position.y > maxPositionY - offsetPosition.y) {
                     position.y = maxPositionY - offsetPosition.y;
+                    velocity.y = 0.0f;
                 }
                 if (position.x < 0) {
                     position.x = 0;
+                    velocity.x = 0.0f;
+                    acceleration.x = 0.0f;
                 }
                 if (position.x > maxPositionX - offsetPosition.x) {
                     position.x = maxPositionX - offsetPosition.x;
+                    velocity.x = 0.0f;
+                    acceleration.x = 0.0f;
                 }
                 float yChange = velocity.y*dt;
                 float xChange = velocity.x*dt;

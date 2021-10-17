@@ -9,9 +9,9 @@ import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.VelocityComponent;
-import me.spaceshooter.game.core.Enitity;
+import me.spaceshooter.game.core.Entity;
 
-public class ShipEntity extends Enitity {
+public class ShipEntity extends Entity {
 
     private float movementSpeed, thrust, thrustSideways, velocityMax;
     private Vector2  dimension;
@@ -31,7 +31,10 @@ public class ShipEntity extends Enitity {
         this.power = false;
         addComponent(new GraphicsCompoment());
         getComponent(GraphicsCompoment.class).setTexture(new Texture("ship1.png"));
+        getComponent(GraphicsCompoment.class).setSizeX(40);
+        getComponent(GraphicsCompoment.class).setSizeY(40);
         addComponent(new PositionComponent());
+        getComponent(PositionComponent.class).setPosition(new Vector2(100,20));
         addComponent(new VelocityComponent());
         addComponent(new InputComponent());
         getComponent(InputComponent.class).addInput(Input.Keys.W,new Vector2(0,1));
