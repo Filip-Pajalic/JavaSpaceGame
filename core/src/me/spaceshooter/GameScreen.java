@@ -15,6 +15,7 @@ import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.BackgroundEntity;
 import me.spaceshooter.game.entities.ShipEntity;
 
+import me.spaceshooter.game.systems.MovableSystem;
 import me.spaceshooter.game.systems.PhysicsSystem;
 import me.spaceshooter.game.systems.RenderSystem;
 
@@ -40,28 +41,17 @@ public class GameScreen implements Screen {
     private Entity entity;
     private GameSystem physicsSystem;
     private RenderSystem renderSystem;
+    private MovableSystem movableSystem;
 
     GameScreen(){
-
-
-        /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.borderColor = Color.BLACK;
-        parameter.borderGamma = 255;
-        parameter.borderWidth = 1;
-        parameter.size = 10;
-        font = generator.generateFont(parameter);
-        generator.dispose();
-        fonttext2  = "";
-        fonttext = "";*/
         debug = false;
-
         entity = new BackgroundEntity("background", WORLD_WIDTH, WORLD_HEIGHT);
         addGameObjectToScreen(this.entity);
         entity = new ShipEntity("ship");
         addGameObjectToScreen(this.entity);
         physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
         renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
+        movableSystem = new MovableSystem();
         start();
     }
 
@@ -76,14 +66,18 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         this.isRunning = true;
+        for(Entity entity : this.entityList){
+            entity.update(deltaTime);
+        }
         renderSystem.update(entityList,deltaTime);
         physicsSystem.update(entityList,deltaTime);
+        movableSystem.update(entityList,deltaTime);
 
     }
 
     private void detectInput(float deltaTime) {
 
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+       /* if(Gdx.input.isKeyPressed(Input.Keys.W)){
             ship.setPower(true);
         }
         else{
@@ -100,10 +94,21 @@ public class GameScreen implements Screen {
         }
         else{
             ship.setPowerRight(false);
-        }
+        }*/
     }
 
     private void renderBackground(float deltaTime){
+      /*FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.borderColor = Color.BLACK;
+        parameter.borderGamma = 255;
+        parameter.borderWidth = 1;
+        parameter.size = 10;
+        font = generator.generateFont(parameter);
+        generator.dispose();
+        fonttext2  = "";
+        fonttext = "";*/
+
      /*
 
        if(debug) {
@@ -157,7 +162,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        font.dispose();
+        //font.dispose();
         renderSystem.dispose();
     }
     @Override

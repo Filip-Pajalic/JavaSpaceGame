@@ -13,15 +13,7 @@ import me.spaceshooter.game.core.Component;
 public class InputComponent extends Component {
 
     protected Map<Integer, Vector2> inputMap = new HashMap<>();
-    public Vector2 directon = new Vector2(0f,0f);
-
-    public Vector2 getDirecton() {
-        return directon;
-    }
-
-    public void setDirecton(Vector2 directon) {
-        this.directon = directon;
-    }
+    public Vector2 direction = new Vector2(0f,0f);
 
     @Override
     public void update(float dt) {
@@ -30,9 +22,11 @@ public class InputComponent extends Component {
             int key = input.getKey();
             Vector2 value = input.getValue();
             if(Gdx.input.isKeyPressed(key)){
-                System.out.println(value.toString());
-                directon = value;
+                this.direction = value;
                 break;
+            }
+            else{
+                this.direction = new Vector2(0f,0f);
             }
         }
     }
@@ -43,5 +37,17 @@ public class InputComponent extends Component {
 
     public void addInput(int key, Vector2 value){
         inputMap.put(key,value);
+    }
+
+    public float getDirectionX() {
+        return this.direction.x;
+    }
+
+    public float getDirectionY() {
+        return this.direction.y;
+    }
+
+    public void setDirection(Vector2 direction) {
+        this.direction = direction;
     }
 }

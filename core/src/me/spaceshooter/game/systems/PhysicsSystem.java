@@ -34,7 +34,7 @@ public class PhysicsSystem extends GameSystem {
 
         for(Entity entity: entityList) {
 
-            if (entity.getComponent(InputComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
+            if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
                 Vector2 position = entity.getComponent(PositionComponent.class).getPosition();
                 Vector2 velocity = entity.getComponent(VelocityComponent.class).getVelocity();
                 Vector2 acceleration = entity.getComponent(VelocityComponent.class).getAcceleration();
@@ -43,7 +43,8 @@ public class PhysicsSystem extends GameSystem {
                 acceleration.x = (accelerationChange.x) * dt;
                 velocity.y = velocity.y + acceleration.y;
                 velocity.x = velocity.x + acceleration.x;
-                velocity.add(velocity.add(acceleration));
+
+                //velocity.add(velocity.add(acceleration));
 
                 if (position.y < 0) {
                     position.y = 0;

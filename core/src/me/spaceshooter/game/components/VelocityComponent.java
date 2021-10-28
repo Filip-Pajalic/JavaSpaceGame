@@ -9,6 +9,7 @@ public class VelocityComponent extends Component {
     private Vector2 velocity = new Vector2(0f,0f);
     private Vector2 acceleration = new Vector2(0f,0f);
     private Vector2 accelerationChange = new Vector2(0f,0f);
+    private Vector2 activeAccelearation = new Vector2(0f,0f);
 
     @Override
     public void update(float dt) {
@@ -31,8 +32,11 @@ public class VelocityComponent extends Component {
         return acceleration;
     }
 
-    public void setAcceleration(Vector2 velocity) {
-        this.acceleration = velocity;
+    public void setAccelerationChangeX(float velocityX) {
+        this.acceleration.x = velocityX;
+    }
+    public void setAccelerationChangeY(float velocityY) {
+        this.acceleration.y = velocityY;
     }
 
     public Vector2 getAccelerationChange() {
@@ -41,6 +45,14 @@ public class VelocityComponent extends Component {
 
     public void setAccelerationChange(Vector2 accelerationChange) {
         this.accelerationChange = accelerationChange;
+    }
+
+    public void setActiveAccelearation(Vector2 activeAccelearation) {
+        this.activeAccelearation = activeAccelearation;
+    }
+
+    public Vector2 getActiveAccelearation() {
+        return activeAccelearation;
     }
 
 }

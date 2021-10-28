@@ -34,12 +34,13 @@ public class ShipEntity extends Entity {
         getComponent(GraphicsCompoment.class).setSizeX(40);
         getComponent(GraphicsCompoment.class).setSizeY(40);
         addComponent(new PositionComponent());
-        getComponent(PositionComponent.class).setPosition(new Vector2(100,20));
+        getComponent(PositionComponent.class).setPosition(new Vector2(100,600));
         addComponent(new VelocityComponent());
         addComponent(new InputComponent());
         getComponent(InputComponent.class).addInput(Input.Keys.W,new Vector2(0,1));
         getComponent(InputComponent.class).addInput(Input.Keys.S,new Vector2(0,-1));
         getComponent(InputComponent.class).addInput(Input.Keys.A,new Vector2(-1,0));
         getComponent(InputComponent.class).addInput(Input.Keys.D,new Vector2(1,0));
+        getComponent(VelocityComponent.class).setActiveAccelearation(new Vector2(thrust,thrustSideways));
     }
 }
