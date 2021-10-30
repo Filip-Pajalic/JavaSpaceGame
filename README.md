@@ -3,8 +3,8 @@ Learning Java by making a game.
 
 ## Todo in order
 
-~~ - Replicate original controls and movement in ECS. ~~
-~~ - Implement MovableSystem. ~~
+- ~~Replicate original controls and movement in ECS.~~
+- ~~Implement MovableSystem.~~
 - Add debug mode
 - Add text for debugging
 - Print FPS for debugging
