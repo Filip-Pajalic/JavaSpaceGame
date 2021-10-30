@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
+import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.VelocityComponent;
@@ -13,11 +14,7 @@ import me.spaceshooter.game.core.GameSystem;
 
 public class PhysicsSystem extends GameSystem {
 
-    private float gravityAcceleration =0.0f;
-
-
-
-    private Vector2 offsetPosition = new Vector2(0f,0f);
+    private float gravityAcceleration = 0.0f;
     private int maxPositionX = 0;
     private int maxPositionY = 0;
 
@@ -26,25 +23,23 @@ public class PhysicsSystem extends GameSystem {
         this.gravityAcceleration = gravityAcceleration;
         this.maxPositionX = maxPositionX;
         this.maxPositionY = maxPositionY;
-
     }
 
     @Override
     public void update(List<Entity> entityList , float dt) {
 
         for(Entity entity: entityList) {
-
-            if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
+            if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null && entity.getComponent(GraphicsCompoment.class) != null){
                 Vector2 position = entity.getComponent(PositionComponent.class).getPosition();
                 Vector2 velocity = entity.getComponent(VelocityComponent.class).getVelocity();
                 Vector2 acceleration = entity.getComponent(VelocityComponent.class).getAcceleration();
                 Vector2 accelerationChange = entity.getComponent(VelocityComponent.class).getAccelerationChange();
+                Vector2 offsetPosition = new Vector2(entity.getComponent(GraphicsCompoment.class).getSizeX(),entity.getComponent(GraphicsCompoment.class).getSizeY());
+
                 acceleration.y = (accelerationChange.y - gravityAcceleration) * dt;
                 acceleration.x = (accelerationChange.x) * dt;
                 velocity.y = velocity.y + acceleration.y;
                 velocity.x = velocity.x + acceleration.x;
-
-                //velocity.add(velocity.add(acceleration));
 
                 if (position.y < 0) {
                     position.y = 0;
@@ -70,6 +65,7 @@ public class PhysicsSystem extends GameSystem {
                 float yChange = velocity.y*dt;
                 float xChange = velocity.x*dt;
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
+                System.out.println(position);
             }
         }
     }

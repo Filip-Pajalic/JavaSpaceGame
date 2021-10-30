@@ -13,34 +13,31 @@ import me.spaceshooter.game.core.Entity;
 
 public class ShipEntity extends Entity {
 
-    private float movementSpeed, thrust, thrustSideways, velocityMax;
-    private Vector2  dimension;
+    private float thrust, velocityMax;
+    private Vector2  dimension, spawnPosition;
     private Texture shipPoweredTexture;
     public Hitbox hitbox;
-    private boolean power;
 
     public ShipEntity(String name) {
         super(name);
-        this.movementSpeed = 100;
         this.shipPoweredTexture = new Texture("ship1powered.png");
-        this.dimension = new Vector2(40,40);
+        this.dimension = new Vector2(20,20);
+        this.spawnPosition = new Vector2(100,10);
         this.hitbox = new Hitbox(dimension,dimension);
         this.velocityMax = 80.0f;
         this.thrust = 40.0f;
-        this.thrustSideways = 40.0f;
-        this.power = false;
         addComponent(new GraphicsCompoment());
         getComponent(GraphicsCompoment.class).setTexture(new Texture("ship1.png"));
-        getComponent(GraphicsCompoment.class).setSizeX(40);
-        getComponent(GraphicsCompoment.class).setSizeY(40);
+        getComponent(GraphicsCompoment.class).setSizeX((int)dimension.x);
+        getComponent(GraphicsCompoment.class).setSizeY((int)dimension.y);
         addComponent(new PositionComponent());
-        getComponent(PositionComponent.class).setPosition(new Vector2(100,600));
+        getComponent(PositionComponent.class).setPosition(spawnPosition);
         addComponent(new VelocityComponent());
         addComponent(new InputComponent());
         getComponent(InputComponent.class).addInput(Input.Keys.W,new Vector2(0,1));
         getComponent(InputComponent.class).addInput(Input.Keys.S,new Vector2(0,-1));
         getComponent(InputComponent.class).addInput(Input.Keys.A,new Vector2(-1,0));
         getComponent(InputComponent.class).addInput(Input.Keys.D,new Vector2(1,0));
-        getComponent(VelocityComponent.class).setActiveAccelearation(new Vector2(thrust,thrustSideways));
+        getComponent(VelocityComponent.class).setActiveAcceleration(thrust);
     }
 }

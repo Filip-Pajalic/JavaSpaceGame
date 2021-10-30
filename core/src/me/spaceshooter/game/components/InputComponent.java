@@ -17,18 +17,18 @@ public class InputComponent extends Component {
 
     @Override
     public void update(float dt) {
-
+        Vector2 resultDirection = new Vector2(0.0f,0.0f);
         for(Map.Entry<Integer, Vector2> input : inputMap.entrySet()){
             int key = input.getKey();
             Vector2 value = input.getValue();
             if(Gdx.input.isKeyPressed(key)){
-                this.direction = value;
-                break;
-            }
-            else{
-                this.direction = new Vector2(0f,0f);
+                resultDirection.x += value.x;
+                resultDirection.y += value.y;
             }
         }
+        resultDirection.clamp(-1.0f,1.0f);
+        direction.x = resultDirection.x;
+        direction.y = resultDirection.y;
     }
 
     public void start(){
@@ -45,6 +45,9 @@ public class InputComponent extends Component {
 
     public float getDirectionY() {
         return this.direction.y;
+    }
+    public Vector2 getDirection() {
+        return this.direction;
     }
 
     public void setDirection(Vector2 direction) {

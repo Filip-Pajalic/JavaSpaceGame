@@ -1,7 +1,6 @@
 package me.spaceshooter;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,19 +22,16 @@ import me.spaceshooter.game.systems.RenderSystem;
 public class GameScreen implements Screen {
 
    //world parameters
-    private final int WORLD_WIDTH = 320*2;
-    private final int WORLD_HEIGHT = 640*2;
-    private float gravityConstant = 0.1f;
+    private final int WORLD_WIDTH = 320;
+    private final int WORLD_HEIGHT = 640;
+    private float gravityConstant = 20.1f;
 
     enum LEVELS {
         LEVEL1
     }
 
     private boolean isRunning = false;
-
     private BitmapFont font;
-
-    private Ship ship = new Ship();
     private boolean debug;
     private List<Entity> entityList = new ArrayList<>();
     private Entity entity;
@@ -73,28 +69,6 @@ public class GameScreen implements Screen {
         physicsSystem.update(entityList,deltaTime);
         movableSystem.update(entityList,deltaTime);
 
-    }
-
-    private void detectInput(float deltaTime) {
-
-       /* if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            ship.setPower(true);
-        }
-        else{
-            ship.setPower(false);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            ship.setPowerLeft(true);
-        }
-        else{
-            ship.setPowerLeft(false);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            ship.setPowerRight(true);
-        }
-        else{
-            ship.setPowerRight(false);
-        }*/
     }
 
     private void renderBackground(float deltaTime){
