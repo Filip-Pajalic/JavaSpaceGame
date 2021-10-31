@@ -3,9 +3,9 @@ Learning Java by making a game.
 
 ## Todo in order
 
-~~ Replicate original controls and movement in ECS. ~~
-~~ Implement MovableSystem. ~~
-~~ Add Observer/subject event system  ~~
+- <strike>Replicate original controls and movement in ECS. </strike>
+- <strike>Implement MovableSystem. </strike>
+- <strike>Add Observer/subject event system  </strike>
 - Add new graphics and shapes.
 - Add debug mode
 - Add text for debugging
