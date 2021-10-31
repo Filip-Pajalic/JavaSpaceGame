@@ -3,15 +3,17 @@ Learning Java by making a game.
 
 ## Todo in order
 
-- ~~Replicate original controls and movement in ECS.~~
-- ~~Implement MovableSystem.~~
+~~ Replicate original controls and movement in ECS. ~~
+~~ Implement MovableSystem. ~~
+~~ Add Observer/subject event system  ~~
+- Add new graphics and shapes.
 - Add debug mode
 - Add text for debugging
 - Print FPS for debugging
-- Prioritize rendering i.e background first. Change rendersystem.
 - Add Hitboxes to rendering for debugging
+- Add asserts/tests
+- Prioritize rendering i.e background first. Change rendersystem.
 - Figure out how to resize properly in resize.
-- Add new graphics and shapes.
 - Add sprite animation support
 - Add ControlSupport.
 - Draw vectors in debug
@@ -22,3 +24,4 @@ Learning Java by making a game.
 - Optimize code to maximize fps
 - Make editor
 - Find way to implement streams and lambdas for practice.
+- implement events/observer properly or replace

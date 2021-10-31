@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.spaceshooter.event.core.Observer;
+import me.spaceshooter.event.observers.DebugObserver;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.BackgroundEntity;
@@ -24,7 +26,7 @@ public class GameScreen implements Screen {
    //world parameters
     private final int WORLD_WIDTH = 320;
     private final int WORLD_HEIGHT = 640;
-    private float gravityConstant = 20.1f;
+    private float gravityConstant = 60.1f;
 
     enum LEVELS {
         LEVEL1
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
     private GameSystem physicsSystem;
     private RenderSystem renderSystem;
     private MovableSystem movableSystem;
+    private Observer debugObserver;
 
     GameScreen(){
         debug = false;
@@ -48,6 +51,8 @@ public class GameScreen implements Screen {
         physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
         renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
         movableSystem = new MovableSystem();
+        debugObserver = new DebugObserver();
+        physicsSystem.addObserver(debugObserver);
         start();
     }
 

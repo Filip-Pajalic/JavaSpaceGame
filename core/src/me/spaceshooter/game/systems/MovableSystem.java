@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
+import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
@@ -22,6 +23,11 @@ public class MovableSystem extends GameSystem {
             }
 
         }
+    }
+
+    @Override
+    public void addObserver(Observer ob) {
+
     }
 
     public MovableSystem() {

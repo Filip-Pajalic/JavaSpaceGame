@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.List;
 
+import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.core.Entity;
@@ -39,6 +40,11 @@ public class RenderSystem extends GameSystem {
             }
         }
         this.batch.end();
+    }
+
+    @Override
+    public void addObserver(Observer ob) {
+
     }
 
     public Camera getCamera() {

@@ -4,6 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
+import me.spaceshooter.event.core.Event;
+import me.spaceshooter.event.core.EventTypes;
+import me.spaceshooter.event.core.Observer;
+import me.spaceshooter.event.events.DebugEvent;
+import me.spaceshooter.event.subjects.PhysicsSubject;
 import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
@@ -18,11 +23,21 @@ public class PhysicsSystem extends GameSystem {
     private int maxPositionX = 0;
     private int maxPositionY = 0;
 
+    private PhysicsSubject physicsSubject;
+    private Event ev;
+
 
     public PhysicsSystem(float gravityAcceleration, int maxPositionX, int maxPositionY){
         this.gravityAcceleration = gravityAcceleration;
         this.maxPositionX = maxPositionX;
         this.maxPositionY = maxPositionY;
+        physicsSubject = new PhysicsSubject();
+        ev = new DebugEvent();
+    }
+
+    @Override
+    public void addObserver(Observer ob){
+        physicsSubject.addObserver(ob);
     }
 
     @Override
@@ -65,7 +80,10 @@ public class PhysicsSystem extends GameSystem {
                 float yChange = velocity.y*dt;
                 float xChange = velocity.x*dt;
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
-                System.out.println(position);
+                String message = entity.toString()  + " velocity :" +  velocity + "\n";
+                ev.setMessage(message);
+                physicsSubject.notify(entity, ev);
+
             }
         }
     }
