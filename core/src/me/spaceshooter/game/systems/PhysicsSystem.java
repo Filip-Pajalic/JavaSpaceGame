@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
 
+import me.spaceshooter.Constants;
 import me.spaceshooter.event.core.Event;
 import me.spaceshooter.event.core.EventTypes;
 import me.spaceshooter.event.core.Observer;
@@ -15,6 +16,7 @@ import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
+import sun.security.util.Debug;
 
 
 public class PhysicsSystem extends GameSystem {
@@ -81,8 +83,11 @@ public class PhysicsSystem extends GameSystem {
                 float xChange = velocity.x*dt;
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
                 String message = entity.toString()  + " velocity :" +  velocity + "\n";
-                ev.setMessage(message);
-                physicsSubject.notify(entity, ev);
+
+                if(Constants.DEBUG.equals(true)) {
+                    ev.setMessage(message);
+                    physicsSubject.notify(entity, ev);
+                }
 
             }
         }

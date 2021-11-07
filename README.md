@@ -6,8 +6,10 @@ Learning Java by making a game.
 - <strike>Replicate original controls and movement in ECS. </strike>
 - <strike>Implement MovableSystem. </strike>
 - <strike>Add Observer/subject event system  </strike>
-- Add new graphics and shapes.
-- Add debug mode
+- <strike>Add new graphics and shapes. </strike>
+- <strike>Add debug mode </strike>
+- Add targetManager/enemy.
+
 - Add text for debugging
 - Print FPS for debugging
 - Add Hitboxes to rendering for debugging

@@ -21,7 +21,7 @@ public class ShipEntity extends Entity {
     public ShipEntity(String name) {
         super(name);
         this.shipPoweredTexture = new Texture("ship1powered.png");
-        this.dimension = new Vector2(20,20);
+        this.dimension = new Vector2(30,30);
         this.spawnPosition = new Vector2(100,10);
         this.hitbox = new Hitbox(dimension,dimension);
         this.velocityMax = 80.0f;
@@ -39,10 +39,5 @@ public class ShipEntity extends Entity {
         getComponent(InputComponent.class).addInput(Input.Keys.A,new Vector2(-1,0));
         getComponent(InputComponent.class).addInput(Input.Keys.D,new Vector2(1,0));
         getComponent(VelocityComponent.class).setActiveAcceleration(thrust);
-    }
-
-    @Override
-    public String toString() {
-        return "Ship";
     }
 }

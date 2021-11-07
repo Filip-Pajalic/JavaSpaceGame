@@ -11,11 +11,13 @@ import java.util.List;
 
 import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.event.observers.DebugObserver;
+import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.BackgroundEntity;
 import me.spaceshooter.game.entities.ShipEntity;
 
+import me.spaceshooter.game.entities.TargetEntity;
 import me.spaceshooter.game.systems.MovableSystem;
 import me.spaceshooter.game.systems.PhysicsSystem;
 import me.spaceshooter.game.systems.RenderSystem;
@@ -24,19 +26,17 @@ import me.spaceshooter.game.systems.RenderSystem;
 public class GameScreen implements Screen {
 
    //world parameters
+
     private final int WORLD_WIDTH = 320;
     private final int WORLD_HEIGHT = 640;
     private float gravityConstant = 60.1f;
-
-    enum LEVELS {
-        LEVEL1
-    }
-
     private boolean isRunning = false;
     private BitmapFont font;
     private boolean debug;
     private List<Entity> entityList = new ArrayList<>();
     private Entity entity;
+    private Entity target;
+    private Entity target2;
     private GameSystem physicsSystem;
     private RenderSystem renderSystem;
     private MovableSystem movableSystem;
@@ -44,10 +44,16 @@ public class GameScreen implements Screen {
 
     GameScreen(){
         debug = false;
-        entity = new BackgroundEntity("background", WORLD_WIDTH, WORLD_HEIGHT);
-        addGameObjectToScreen(this.entity);
         entity = new ShipEntity("ship");
         addGameObjectToScreen(this.entity);
+
+        target = new TargetEntity("Circle");
+        target2 = new TargetEntity("Rect");
+        target.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.CIRCLE);
+        target2.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.RECANGLE);
+        addGameObjectToScreen(this.target);
+        addGameObjectToScreen(this.target2);
+
         physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
         renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
         movableSystem = new MovableSystem();

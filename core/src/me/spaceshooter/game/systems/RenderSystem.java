@@ -10,16 +10,21 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.List;
 
+import me.spaceshooter.Constants;
 import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
+import me.spaceshooter.game.entities.BackgroundEntity;
 
 public class RenderSystem extends GameSystem {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private Camera camera;
+    private BackgroundEntity background;
+    GraphicsCompoment backgroundGraphics;
+    PositionComponent backgroundPosition;
 
     private Viewport viewport;
 
@@ -28,18 +33,19 @@ public class RenderSystem extends GameSystem {
         this.camera = new OrthographicCamera();
         this.viewport = new StretchViewport(width,height, this.camera);
         this.shapeRenderer = new ShapeRenderer();
+        this.background = new BackgroundEntity("background", width, height);
+        this.backgroundGraphics = this.background.getComponent(GraphicsCompoment.class);
+        this.backgroundPosition = this.background.getComponent(PositionComponent.class);
     }
     @Override
-    public void update(List<Entity> entityList , float dt) {
+    public void update(List<Entity> entityList , float dt){
         this.batch.begin();
-        for(Entity entity : entityList){
-            GraphicsCompoment entityGraphics = entity.getComponent(GraphicsCompoment.class);
-            PositionComponent entityPosition = entity.getComponent(PositionComponent.class);
-            if(entityGraphics != null && entityPosition!=null){
-                this.batch.draw(entityGraphics.getTexture(),entityPosition.getPosition().x,entityPosition.getPosition().y,entityGraphics.getSizeX(),entityGraphics.getSizeY());
-            }
-        }
+        this.batch.draw(backgroundGraphics.getTexture(), backgroundPosition.getPosition().x, backgroundPosition.getPosition().y, backgroundGraphics.getSizeX(), backgroundGraphics.getSizeY());
         this.batch.end();
+        renderShape(entityList);
+        renderTextures(entityList);
+
+
     }
 
     @Override
@@ -71,4 +77,47 @@ public class RenderSystem extends GameSystem {
         this.batch.dispose();
         this.shapeRenderer.dispose();
     }
+
+    public void renderTextures(List<Entity> entityList){
+        this.batch.begin();
+        for(Entity entity : entityList){
+            GraphicsCompoment entityGraphics = entity.getComponent(GraphicsCompoment.class);
+            PositionComponent entityPosition = entity.getComponent(PositionComponent.class);
+            if(entityGraphics != null && entityPosition!=null){
+                if(entityGraphics.getTexture() != null) {
+                    this.batch.draw(entityGraphics.getTexture(), entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX(), entityGraphics.getSizeY());
+                }
+                if(Constants.DEBUG.equals(true)){
+
+                }
+            }
+        }
+        this.batch.end();
+    }
+
+    public void renderShape(List<Entity> entityList){
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for(Entity entity : entityList){
+            GraphicsCompoment entityGraphics = entity.getComponent(GraphicsCompoment.class);
+            PositionComponent entityPosition = entity.getComponent(PositionComponent.class);
+            if(entityGraphics != null && entityPosition!=null){
+                if(entityGraphics.getShape() != null){
+                    switch ( entityGraphics.getShape()){
+                        case CIRCLE:
+                            this.shapeRenderer.circle(entityPosition.getPosition().x,entityPosition.getPosition().y,entityGraphics.getRadius());
+                            break;
+                        case RECANGLE:
+                            this.shapeRenderer.rect(entityPosition.getPosition().x,entityPosition.getPosition().y,entityGraphics.getSizeX(),entityGraphics.getSizeY());
+                            break;
+                    }
+                    this.shapeRenderer.setColor(entityGraphics.getColor());
+                }
+                if(Constants.DEBUG.equals(true)){
+                }
+            }
+        }
+        this.shapeRenderer.end();
+    }
+
+
 }
