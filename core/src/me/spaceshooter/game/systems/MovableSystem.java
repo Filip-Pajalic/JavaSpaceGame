@@ -12,7 +12,6 @@ import me.spaceshooter.game.core.GameSystem;
 
 public class MovableSystem extends GameSystem {
 
-
     @Override
     public void update(List<Entity> entityList, float dt) {
         for(Entity entity: entityList) {
@@ -21,16 +20,13 @@ public class MovableSystem extends GameSystem {
                 Vector2 acceleration = new Vector2(entity.getComponent(VelocityComponent.class).getActiveAcceleration());
                 entity.getComponent(VelocityComponent.class).setAccelerationChange(acceleration.scl(direction));
             }
-
         }
     }
 
     @Override
     public void addObserver(Observer ob) {
-
     }
 
     public MovableSystem() {
     }
-
 }

@@ -84,9 +84,9 @@ public class PhysicsSystem extends GameSystem {
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
                 String message = entity.toString()  + " velocity :" +  velocity + "\n";
 
-                if(Constants.DEBUG.equals(true)) {
-                    ev.setMessage(message);
-                    physicsSubject.notify(entity, ev);
+                if(Constants.DEBUG ) {
+                    //ev.setMessage(message);
+                    //physicsSubject.notify(entity, ev);
                 }
 
             }

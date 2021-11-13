@@ -18,9 +18,8 @@ public class GraphicsCompoment extends Component {
     private Shapes shape = null;
     private Color color = null;
 
-    private int sizeX = 0;
+    private int sizeX = 0; //radius
     private int sizeY = 0;
-    private int radius = 0;
 
     @Override
     public void update(float dt) {
@@ -68,11 +67,4 @@ public class GraphicsCompoment extends Component {
         this.color = color;
     }
 
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
 }

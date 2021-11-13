@@ -1,10 +1,6 @@
 package me.spaceshooter;
 
-public enum Constants {
-    DEBUG(Constants.DEBUG_);
-
-    Constants(boolean i) {}
-
-    public static final boolean DEBUG_ = false;
+public class Constants {
+    public static final boolean DEBUG = true;
 
 }
