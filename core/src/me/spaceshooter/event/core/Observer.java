@@ -6,5 +6,5 @@ import me.spaceshooter.game.core.Entity;
 
 public interface Observer {
 
-    public void onNotify(Entity entity, Event event);
+    void onNotify(Entity entity, Event event);
 }

@@ -1,4 +1,8 @@
 package me.spaceshooter.event.core;
 
-public enum EventTypes {    DEBUG_TEXT
+public enum EventTypes {
+    DEBUG_TEXT,
+    DEBUG_VELOCITY,
+    DEBUG_POSITION,
+    DEBUG_ACCELERATION
 }

@@ -1,22 +1,15 @@
 package me.spaceshooter.game.systems;
 
-import com.badlogic.gdx.Gdx;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -32,15 +25,14 @@ import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.BackgroundEntity;
+import me.spaceshooter.gui.GameUi;
 
 public class RenderSystem extends GameSystem {
-    private SpriteBatch batch;
-    private Stage stage;
-    private Table table;
-    Skin skin;
-    private ShapeRenderer shapeRenderer;
+    private final SpriteBatch batch;
+    private GameUi gameUi;
+
+    private final ShapeRenderer shapeRenderer;
     private Camera camera;
-    private BackgroundEntity background;
     GraphicsCompoment backgroundGraphics;
     PositionComponent backgroundPosition;
 
@@ -48,69 +40,19 @@ public class RenderSystem extends GameSystem {
     private Viewport viewport;
 
     public RenderSystem(int width, int height){
-
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.camera = new OrthographicCamera();
         this.viewport = new StretchViewport(width,height, this.camera);
-        this.stage = new Stage(this.viewport);
-
-        this.background = new BackgroundEntity("background", width, height);
-        this.backgroundGraphics = this.background.getComponent(GraphicsCompoment.class);
-        this.backgroundPosition = this.background.getComponent(PositionComponent.class);
-        createGui();
+        BackgroundEntity background = new BackgroundEntity("background", width, height);
+        this.backgroundGraphics = background.getComponent(GraphicsCompoment.class);
+        this.backgroundPosition = background.getComponent(PositionComponent.class);
     }
 
-    public void createGui(){
-        Gdx.input.setInputProcessor(stage);
-
-        // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-        // recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        skin = new Skin();
-
-        // Generate a 1x1 white texture and store it in the skin named "white".
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-
-        // Store the default libGDX font under the name "default".
-        skin.add("default", new BitmapFont());
-
-        // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        skin.add("default", textButtonStyle);
-
-        // Create a table that fills the screen. Everything else will go inside this table.
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-        final TextButton button = new TextButton("Click me!", skin);
-        table.add(button);
-
-        // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
-        // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
-        // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
-        // revert the checked state.
-        button.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                System.out.println("Clicked! Is checked: " + button.isChecked());
-                button.setText("Good job!");
-            }
-        });
-
-        // Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
-        table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
-        table.setDebug(Constants.DEBUG);
+    public void setGameUi(GameUi gameUi){
+        this.gameUi = gameUi;
+        this.gameUi.getStage().setViewport(this.viewport);
     }
-
 
     @Override
     public void update(List<Entity> entityList , float dt){
@@ -119,9 +61,7 @@ public class RenderSystem extends GameSystem {
         this.batch.end();
         renderShape(entityList);
         renderTextures(entityList);
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-
+        this.gameUi.update(dt);
     }
 
     public void renderTextures(List<Entity> entityList){
@@ -157,8 +97,8 @@ public class RenderSystem extends GameSystem {
                     this.shapeRenderer.setColor(entityGraphics.getColor());
                 }
             }
+            //draw hitboxes
             if(Constants.DEBUG && entityCollision != null && entityPosition!=null){
-
                 for(Map.Entry<CollisionComponent.basicCollisionShapes, Vector2> collisionShape: entityCollision.getCollisionShapes().entrySet()) {
                     switch (collisionShape.getKey()) {
                         case CIRCLE:
@@ -207,15 +147,12 @@ public class RenderSystem extends GameSystem {
     }
 
     public Stage getStage() {
-        return this.stage;
+        return this.gameUi.getStage();
     }
 
     public void dispose(){
         this.batch.dispose();
         this.shapeRenderer.dispose();
-        this.stage.dispose();
-
+        this.gameUi.getStage().dispose();
     }
-
-
 }

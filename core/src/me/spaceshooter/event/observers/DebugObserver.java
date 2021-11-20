@@ -12,6 +12,13 @@ public class DebugObserver implements Observer {
             case DEBUG_TEXT:
                 debugMessage(event);
                 break;
+            case DEBUG_VELOCITY:
+                debugMessage(event);
+                break;
+            case DEBUG_ACCELERATION:
+                debugMessage(event);
+            case DEBUG_POSITION:
+                debugMessage(event);
         }
     }
     private void debugMessage(Event event)

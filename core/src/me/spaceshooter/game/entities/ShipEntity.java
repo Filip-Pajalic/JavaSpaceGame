@@ -20,7 +20,7 @@ public class ShipEntity extends Entity {
     public ShipEntity(String name) {
         super(name);
 
-        this.dimension = new Vector2(30,30);
+        this.dimension = new Vector2(20,20);
         this.spawnPosition = new Vector2(100,10);
         this.velocityMax = 80.0f;
         this.thrust = 120.0f;

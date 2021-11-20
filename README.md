@@ -8,19 +8,25 @@ Learning Java by making a game.
 - <strike>Add Observer/subject event system  </strike>
 - <strike>Add new graphics and shapes. </strike>
 - <strike>Add debug mode </strike>
-- <strike> Add Hitboxes to rendering for debugging </strike>
-- Add text for debugging
-- Print FPS for debugging
+- <strike> Add Hitboxes to rendering for debugging </strike>  
+- <strike> Added bases for gui class </strike>
+- <strike> Add text for debugging </strike>
+- <strike> Print FPS for debugging </strike>
+
+- Fix problem at 0.0 position
+- Add rectangular collision
+- Add scoring system
+  
 
 - Add asserts/tests
 - Prioritize rendering i.e background first. Change rendersystem.
 - Figure out how to resize properly in resize.
 - Add sprite animation support
-- fix wobbly render?
+- fix wobbly render? (scaling problem?)
 
 - Draw vectors in debug
 - Add Proper vector math  
-- Add rectangular collision
+
 - Add ParticleComponent/system and physics
 - Add maxspeed and other configurations 
   
@@ -30,7 +36,7 @@ Learning Java by making a game.
 - Add targetManager/enemy.
 - Find way to implement streams and lambdas for practice.
 
-- Add scoring system
+
 - Make editor
 - replace observer with async?
 
