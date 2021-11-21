@@ -12,18 +12,20 @@ Learning Java by making a game.
 - <strike> Added bases for gui class </strike>
 - <strike> Add text for debugging </strike>
 - <strike> Print FPS for debugging </strike>
+- <strike>Add rectangular/circular collision </strike>
 
-- Fix problem at 0.0 position
-- Add rectangular collision
+
+
 - Add scoring system
+- Add entities to collisionlist, so collisions are not checked twice
   
+- Make use of components updateSystem
 
-- Add asserts/tests
 - Prioritize rendering i.e background first. Change rendersystem.
 - Figure out how to resize properly in resize.
 - Add sprite animation support
 - fix wobbly render? (scaling problem?)
-
+- Fix problem at 0.0 position
 - Draw vectors in debug
 - Add Proper vector math  
 
@@ -35,6 +37,7 @@ Learning Java by making a game.
 
 - Add targetManager/enemy.
 - Find way to implement streams and lambdas for practice.
+- Reduce boilerplate code
 
 
 - Make editor

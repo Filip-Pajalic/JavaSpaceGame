@@ -1,6 +1,8 @@
 package me.spaceshooter.game.systems;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.List;
@@ -48,7 +50,6 @@ public class PhysicsSystem extends GameSystem {
     @SuppressWarnings("DefaultLocale")
     @Override
     public void update(List<Entity> entityList , float dt) {
-
         for(Entity entity: entityList) {
             if (entity.getComponent(PositionComponent.class) != null && entity.getComponent(VelocityComponent.class) != null && entity.getComponent(GraphicsCompoment.class) != null){
                 Vector2 position = entity.getComponent(PositionComponent.class).getPosition();
@@ -88,7 +89,6 @@ public class PhysicsSystem extends GameSystem {
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
 
                 if(Constants.DEBUGUITEXT ) {
-
                     event_acceleration.setMessage("Acceleration x: " + String.format("%.2f", acceleration.y) +"    Acceleration y: " + String.format("%.2f", acceleration.x));
                     event_velocity.setMessage("Velocity x: " + String.format("%.1f", velocity.y) +"    Velocity y: " + String.format("%.1f", velocity.x));
                     event_position.setMessage("Position x: " + String.format("%.0f", position.y) +"    Position y: " + String.format("%.0f", position.x));
@@ -100,4 +100,5 @@ public class PhysicsSystem extends GameSystem {
             }
         }
     }
+
 }

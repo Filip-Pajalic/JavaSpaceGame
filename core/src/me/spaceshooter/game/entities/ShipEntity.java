@@ -2,7 +2,9 @@ package me.spaceshooter.game.entities;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Shape;
 
 
 import me.spaceshooter.game.components.CollisionComponent;
@@ -47,6 +49,6 @@ public class ShipEntity extends Entity {
 
         //Collision
         addComponent(new CollisionComponent());
-        getComponent(CollisionComponent.class).addCollisionShape(CollisionComponent.basicCollisionShapes.RECT,this.dimension);
+        getComponent(CollisionComponent.class).setShapeRect(new Rectangle(spawnPosition.x,spawnPosition.y,dimension.x,dimension.y));
     }
 }

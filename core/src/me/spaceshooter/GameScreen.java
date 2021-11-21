@@ -17,6 +17,7 @@ import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.ShipEntity;
 
 import me.spaceshooter.game.entities.TargetEntity;
+import me.spaceshooter.game.systems.CollisionSystem;
 import me.spaceshooter.game.systems.MovableSystem;
 import me.spaceshooter.game.systems.PhysicsSystem;
 import me.spaceshooter.game.systems.RenderSystem;
@@ -27,8 +28,8 @@ public class GameScreen implements Screen {
 
     //world parameters
 
-    private final int WORLD_WIDTH = 960;
-    private final int WORLD_HEIGHT = 720;
+    private final int WORLD_WIDTH = 500;
+    private final int WORLD_HEIGHT = 500;
     private float gravityConstant = 60.1f;
     private boolean isRunning = false;
     private BitmapFont font;
@@ -38,6 +39,7 @@ public class GameScreen implements Screen {
     private PhysicsSystem physicsSystem;
     private RenderSystem renderSystem;
     private MovableSystem movableSystem;
+    private CollisionSystem collisionSystem;
     private Observer debugObserver;
     private GameUi gameUi;
 
@@ -49,12 +51,17 @@ public class GameScreen implements Screen {
         entity = new TargetEntity("Circle");
         entity.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.CIRCLE);
         addGameObjectToScreen(this.entity);
+        entity = new TargetEntity("Circle");
+        entity.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.CIRCLE);
+        addGameObjectToScreen(this.entity);
+        collisionSystem = new CollisionSystem();
         physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
         renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
         movableSystem = new MovableSystem();
         debugObserver = new DebugObserver();
         renderSystem.setGameUi(this.gameUi);
         physicsSystem.addObserver(this.gameUi);
+        collisionSystem.addObserver(this.gameUi);
         start();
     }
 
@@ -75,6 +82,7 @@ public class GameScreen implements Screen {
         renderSystem.update(entityList,deltaTime);
         physicsSystem.update(entityList,deltaTime);
         movableSystem.update(entityList,deltaTime);
+        collisionSystem.update(entityList,deltaTime);
 
     }
 

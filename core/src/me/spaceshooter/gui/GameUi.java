@@ -22,13 +22,14 @@ public class GameUi implements Observer {
 
     Skin skin;
     Stage stage;
-    Label fpsLabel,accelerationLabel,velocityLabel,positionLabel;
+    Label fpsLabel,accelerationLabel,velocityLabel,positionLabel, collisionLabel;
     Table debugTable;
     int height, width;
     Float timer = 0.0f;
     String position = "";
     String velocity = "";
     String acceleration = "";
+    String collision = "";
 
     public GameUi(int width, int height) {
         this.stage = new Stage();
@@ -56,13 +57,15 @@ public class GameUi implements Observer {
         accelerationLabel = new Label("acceleration:", this.skin);
         velocityLabel = new Label("velocity:", this.skin);
         positionLabel = new Label("position:", this.skin);
+        collisionLabel = new Label("", this.skin);
+        collisionLabel.setPosition(100,100);
         debugTable = new Table();
         debugTable.add(fpsLabel).width(100).row();
         debugTable.add(accelerationLabel).width(100).row();
         debugTable.add(velocityLabel).width(100).row();
         debugTable.add(positionLabel).width(100).row();
+        debugTable.add(collisionLabel).width(100).row();
         debugTable.setPosition(this.width/2.0f, height-100);
-        debugTable.pack();
         debugTable.setBackground(textureRegionDrawableBg);
     }
 
@@ -85,6 +88,7 @@ public class GameUi implements Observer {
             positionLabel.setText(this.position);
             velocityLabel.setText(this.velocity);
             accelerationLabel.setText(this.acceleration);
+            collisionLabel.setText(this.collision);
         }
     }
 
@@ -104,6 +108,9 @@ public class GameUi implements Observer {
                 break;
             case DEBUG_POSITION:
                 position = event.message;
+                break;
+            case DEBUG_COLLISION:
+                collision = event.message;
                 break;
         }
     }

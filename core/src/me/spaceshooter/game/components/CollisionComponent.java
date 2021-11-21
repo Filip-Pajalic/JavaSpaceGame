@@ -1,33 +1,45 @@
 package me.spaceshooter.game.components;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import me.spaceshooter.game.core.Component;
 
 public class CollisionComponent extends Component {
 
-    public enum basicCollisionShapes {
-        CIRCLE,
-        RECT,
-        ELLIPSE
-    }
-
-    private Map<basicCollisionShapes,Vector2> shapesList =  new HashMap<>();
+    private Rectangle rect = null;
+    private Circle circle = null;
+    private boolean collided = false;
 
     @Override
     public void update(float dt) {
 
     }
 
-    public Map<basicCollisionShapes,Vector2> getCollisionShapes(){
-        return shapesList;
+
+    public void setShapeCircle(Circle circle){
+        this.circle = circle;
+        this.rect = null;
     }
 
-    public void addCollisionShape(basicCollisionShapes type, Vector2 dimension){
-        shapesList.put(type,dimension);
+    public void setShapeRect(Rectangle rect){
+        this.rect  = rect;
+        this.circle = null;
+    }
+
+    public Rectangle getRect(){
+        return this.rect;
+    }
+
+    public Circle getCircle(){
+        return this.circle;
+    }
+    public void setCollided(boolean collided){
+        this.collided = collided;
+    }
+    public boolean getCollided(){
+        return this.collided;
     }
 
 }

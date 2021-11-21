@@ -99,19 +99,15 @@ public class RenderSystem extends GameSystem {
             }
             //draw hitboxes
             if(Constants.DEBUG && entityCollision != null && entityPosition!=null){
-                for(Map.Entry<CollisionComponent.basicCollisionShapes, Vector2> collisionShape: entityCollision.getCollisionShapes().entrySet()) {
-                    switch (collisionShape.getKey()) {
-                        case CIRCLE:
-                            this.shapeRenderer.circle(entityPosition.getPosition().x,entityPosition.getPosition().y,collisionShape.getValue().x);
-                            break;
-                        case ELLIPSE:
-                            break;
-                        case RECT:
-                            this.shapeRenderer.rect(entityPosition.getPosition().x,entityPosition.getPosition().y,collisionShape.getValue().x,collisionShape.getValue().y);
-                            break;
-                    }
-                    this.shapeRenderer.setColor(Color.RED);
+                if(entityCollision.getCircle() == null && entityCollision.getRect() != null)
+                {
+                    this.shapeRenderer.rect(entityPosition.getPosition().x,entityPosition.getPosition().y,entityCollision.getRect().width,entityCollision.getRect().height);
                 }
+                else if(entityCollision.getRect() == null && entityCollision.getCircle() != null){
+                    this.shapeRenderer.circle(entityPosition.getPosition().x,entityPosition.getPosition().y,entityCollision.getCircle().radius);
+                }
+                this.shapeRenderer.setColor(Color.RED);
+
             }
         }
         this.shapeRenderer.end();

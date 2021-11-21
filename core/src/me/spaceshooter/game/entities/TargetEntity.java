@@ -3,6 +3,8 @@ package me.spaceshooter.game.entities;
 
 import com.badlogic.gdx.graphics.Color;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 
@@ -32,7 +34,7 @@ public class TargetEntity extends Entity {
 
         //Collision
         addComponent(new CollisionComponent());
-        getComponent(CollisionComponent.class).addCollisionShape(CollisionComponent.basicCollisionShapes.CIRCLE,this.dimension);
+        getComponent(CollisionComponent.class).setShapeCircle(new Circle(spawnPosition.x,spawnPosition.y,dimension.y));
     }
 
 

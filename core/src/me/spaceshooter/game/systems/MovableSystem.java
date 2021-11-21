@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.List;
 
 import me.spaceshooter.event.core.Observer;
+import me.spaceshooter.game.components.CollisionComponent;
 import me.spaceshooter.game.components.InputComponent;
+import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
@@ -18,6 +20,8 @@ public class MovableSystem extends GameSystem {
             if (entity.getComponent(InputComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
                 Vector2 direction = entity.getComponent(InputComponent.class).getDirection();
                 Vector2 acceleration = new Vector2(entity.getComponent(VelocityComponent.class).getActiveAcceleration());
+                //Vector2 position = new Vector2(entity.getComponent(PositionComponent.class).getPosition());
+                //Vector2 Hitbox = new Vector2(entity.getComponent(CollisionComponent.class).setPosition()
                 entity.getComponent(VelocityComponent.class).setAccelerationChange(acceleration.scl(direction));
             }
         }
