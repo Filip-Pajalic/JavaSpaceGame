@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.event.observers.DebugObserver;
@@ -21,6 +22,7 @@ import me.spaceshooter.game.systems.CollisionSystem;
 import me.spaceshooter.game.systems.MovableSystem;
 import me.spaceshooter.game.systems.PhysicsSystem;
 import me.spaceshooter.game.systems.RenderSystem;
+import me.spaceshooter.game.systems.ScoringSystem;
 import me.spaceshooter.gui.GameUi;
 
 
@@ -28,11 +30,8 @@ public class GameScreen implements Screen {
 
     //world parameters
 
-    private final int WORLD_WIDTH = 500;
-    private final int WORLD_HEIGHT = 500;
     private float gravityConstant = 60.1f;
     private boolean isRunning = false;
-    private BitmapFont font;
     private boolean debug;
     private List<Entity> entityList = new ArrayList<>();
     private Entity entity;
@@ -40,28 +39,28 @@ public class GameScreen implements Screen {
     private RenderSystem renderSystem;
     private MovableSystem movableSystem;
     private CollisionSystem collisionSystem;
+    private ScoringSystem scoringSystem;
     private Observer debugObserver;
     private GameUi gameUi;
 
     GameScreen(){
-        this.gameUi = new GameUi(WORLD_WIDTH,WORLD_HEIGHT);
+        this.gameUi = new GameUi(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 
         entity = new ShipEntity("ship");
         addGameObjectToScreen(this.entity);
-        entity = new TargetEntity("Circle");
-        entity.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.CIRCLE);
-        addGameObjectToScreen(this.entity);
-        entity = new TargetEntity("Circle");
+        entity = new TargetEntity("Circle" + UUID.randomUUID());
         entity.getComponent(GraphicsCompoment.class).setShape(GraphicsCompoment.Shapes.CIRCLE);
         addGameObjectToScreen(this.entity);
         collisionSystem = new CollisionSystem();
-        physicsSystem = new PhysicsSystem(gravityConstant,WORLD_WIDTH,WORLD_HEIGHT);
-        renderSystem = new RenderSystem(WORLD_WIDTH,WORLD_HEIGHT);
+        physicsSystem = new PhysicsSystem(gravityConstant,Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
+        renderSystem = new RenderSystem(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
         movableSystem = new MovableSystem();
         debugObserver = new DebugObserver();
+        scoringSystem = new ScoringSystem();
         renderSystem.setGameUi(this.gameUi);
         physicsSystem.addObserver(this.gameUi);
         collisionSystem.addObserver(this.gameUi);
+        scoringSystem.addObserver(this.gameUi);
         start();
     }
 
@@ -83,6 +82,7 @@ public class GameScreen implements Screen {
         physicsSystem.update(entityList,deltaTime);
         movableSystem.update(entityList,deltaTime);
         collisionSystem.update(entityList,deltaTime);
+        scoringSystem.update(entityList,deltaTime);
 
     }
 
@@ -98,11 +98,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        //GameSystem gs = GameSystem.cast(c)
-        /* kanske kan göra en cast här som i component istället*/
         renderSystem.getViewport().update(width,height,true);
         renderSystem.getBatch().setProjectionMatrix(renderSystem.getCamera().combined);
         renderSystem.getShapeRenderer().setProjectionMatrix(renderSystem.getCamera().combined);
+        this.gameUi.setViewPort(renderSystem.getViewport());
     }
 
     @Override

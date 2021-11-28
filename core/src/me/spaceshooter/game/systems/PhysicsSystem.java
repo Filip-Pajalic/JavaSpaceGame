@@ -96,7 +96,6 @@ public class PhysicsSystem extends GameSystem {
                     this.subject.notify(entity, event_velocity);
                     this.subject.notify(entity, event_position);
                 }
-
             }
         }
     }

@@ -13,34 +13,38 @@ Learning Java by making a game.
 - <strike> Add text for debugging </strike>
 - <strike> Print FPS for debugging </strike>
 - <strike>Add rectangular/circular collision </strike>
+- <strike> Add random enemy spawn </strike>
+- <strike> Add scoring system </strike>
+
+Basic:
+
+- fix wobbly render? (scaling problem?)
+- Fix problem at 0.0 position
+- Add startmenu
+- Add animation when flying
+- Add particle effects from rockets
+- Add particle effects from target
+- Add entities to collisionlist, so collisions are not checked twice, Collide only once with each unique object
+- Add ControlSupport for phone
+- Add level + leveltimer and highscore
+- Ensure targets dont spawn to close to each other
 
 
-
-- Add scoring system
-- Add entities to collisionlist, so collisions are not checked twice
-  
+Improvements:
+- Refactor boilerplate code  
+- Procedural generation of background and ground
 - Make use of components updateSystem
-
 - Prioritize rendering i.e background first. Change rendersystem.
 - Figure out how to resize properly in resize.
 - Add sprite animation support
-- fix wobbly render? (scaling problem?)
-- Fix problem at 0.0 position
 - Draw vectors in debug
-- Add Proper vector math  
-
-- Add ParticleComponent/system and physics
-- Add maxspeed and other configurations 
-  
+- Add Proper vector math
+- Add maxspeed and other configurations   
 - Break out entity configurations to a file that is loaded on programstart. 
 - Optimize code to maximize fps
-
 - Add targetManager/enemy.
 - Find way to implement streams and lambdas for practice.
 - Reduce boilerplate code
-
-
 - Make editor
 - replace observer with async?
-
-- Add ControlSupport for phone
+- Replace edgechecking with infinite scroll and line collision to the ground.

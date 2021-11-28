@@ -1,6 +1,7 @@
 package me.spaceshooter.game.systems;
 
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,6 +15,8 @@ import me.spaceshooter.event.core.Subject;
 import me.spaceshooter.event.events.DebugEvent;
 import me.spaceshooter.event.subjects.CollisionSubject;
 import me.spaceshooter.game.components.CollisionComponent;
+import me.spaceshooter.game.components.GraphicsCompoment;
+import me.spaceshooter.game.components.HealthComponent;
 import me.spaceshooter.game.components.PositionComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
@@ -30,6 +33,14 @@ public class CollisionSystem extends GameSystem {
 
     @Override
     public void update(List<Entity> entityList , float dt) {
+        //reset collision
+        for(Entity entity : entityList){
+            if (entity.getComponent(CollisionComponent.class) != null){
+                entity.getComponent(CollisionComponent.class).setCollided(false);
+                entity.getComponent(CollisionComponent.class).clearCollisionList();
+            }
+        }
+
         for (Entity entity : entityList) {
             if (entity.getComponent(CollisionComponent.class) != null) {
                 for (Entity entity2 : entityList) {
@@ -50,7 +61,6 @@ public class CollisionSystem extends GameSystem {
                             }
                             if(rect != null && circle != null ) {
                                 if (detectCollisionCircleRect(rect, circle)) {
-
                                     entityCollision.setCollided(true);
                                     entityCollision2.setCollided(true);
                                 }
@@ -59,7 +69,6 @@ public class CollisionSystem extends GameSystem {
                                     entityCollision2.setCollided(false);
                                 }
                             }
-
                             if (Constants.DEBUGUITEXT) {
                                 event_collision.setMessage("Collision: " + entityCollision.getCollided());
                                 this.subject.notify(entity, event_collision);

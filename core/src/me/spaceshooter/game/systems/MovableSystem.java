@@ -20,8 +20,6 @@ public class MovableSystem extends GameSystem {
             if (entity.getComponent(InputComponent.class) != null && entity.getComponent(VelocityComponent.class) != null){
                 Vector2 direction = entity.getComponent(InputComponent.class).getDirection();
                 Vector2 acceleration = new Vector2(entity.getComponent(VelocityComponent.class).getActiveAcceleration());
-                //Vector2 position = new Vector2(entity.getComponent(PositionComponent.class).getPosition());
-                //Vector2 Hitbox = new Vector2(entity.getComponent(CollisionComponent.class).setPosition()
                 entity.getComponent(VelocityComponent.class).setAccelerationChange(acceleration.scl(direction));
             }
         }

@@ -7,31 +7,55 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import me.spaceshooter.Constants;
 import me.spaceshooter.event.core.Event;
 import me.spaceshooter.event.core.Observer;
+import me.spaceshooter.event.events.HealthEvent;
+import me.spaceshooter.game.components.GraphicsCompoment;
+import me.spaceshooter.game.components.HealthComponent;
+import me.spaceshooter.game.components.PositionComponent;
+import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 
 public class GameUi implements Observer {
 
     Skin skin;
     Stage stage;
-    Label fpsLabel,accelerationLabel,velocityLabel,positionLabel, collisionLabel;
+    Label fpsLabel,accelerationLabel,velocityLabel,positionLabel, collisionLabel, scoreLabel;
+    Label healthLabel;
     Table debugTable;
+    Table healthTable;
+    Table persistentTable;
     int height, width;
     Float timer = 0.0f;
     String position = "";
     String velocity = "";
     String acceleration = "";
     String collision = "";
+    String score = "0";
+    String health = "0";
 
     public GameUi(int width, int height) {
+        this.healthTable = new Table();
+        this.persistentTable = new Table();
+        this.healthTable.setPosition(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
         this.stage = new Stage();
         this.skin = new Skin();
         this.width = width;
@@ -39,13 +63,25 @@ public class GameUi implements Observer {
         createUi();
     }
 
+    public void setViewPort(Viewport viewport){
+        this.stage.setViewport(viewport);
+    }
+
     private void createUi(){
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
+        scoreLabel = new Label("0", this.skin);
+        persistentTable.setPosition(Constants.WORLD_WIDTH/2,Constants.WORLD_HEIGHT-30);
+        persistentTable.add(scoreLabel);
+        this.healthLabel = new Label("0",this.skin);
+        this.healthTable.add(healthLabel);
         Gdx.input.setInputProcessor(stage);
         if(Constants.DEBUGUITEXT) {
             createDebugUi();
             stage.addActor(debugTable);
+
         }
+        stage.addActor(persistentTable);
+        stage.addActor(healthTable);
         stage.setDebugAll(Constants.DEBUGUI);
     }
     public void createDebugUi(){
@@ -59,6 +95,7 @@ public class GameUi implements Observer {
         positionLabel = new Label("position:", this.skin);
         collisionLabel = new Label("", this.skin);
         collisionLabel.setPosition(100,100);
+
         debugTable = new Table();
         debugTable.add(fpsLabel).width(100).row();
         debugTable.add(accelerationLabel).width(100).row();
@@ -71,15 +108,20 @@ public class GameUi implements Observer {
 
     public void update(float dt){
 
+        drawHealthLabel();
+        updateScore(dt);
         timer+=dt;
         if (timer >= 0.05) {
             timer -= 0.05f;
             updateDebug(dt);
-
         }
         this.stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 10f));
         this.stage.draw();
 
+    }
+
+    private void drawHealthLabel(){
+        healthLabel.setText(this.health);
     }
 
     public void updateDebug(float dt){
@@ -90,6 +132,13 @@ public class GameUi implements Observer {
             accelerationLabel.setText(this.acceleration);
             collisionLabel.setText(this.collision);
         }
+    }
+
+    public void updateScore(float dt){
+
+        scoreLabel.setText("Score \n"+this.score);
+        scoreLabel.setAlignment(Align.center);
+
     }
 
     public Stage getStage(){
@@ -111,6 +160,15 @@ public class GameUi implements Observer {
                 break;
             case DEBUG_COLLISION:
                 collision = event.message;
+                break;
+            case SCORING_EVENT:
+                this.score = event.message;
+                break;
+            case HEALTH_EVENT:
+                this.health = event.message;
+                int textwidth = 1;
+                healthTable.setPosition(entity.getComponent(PositionComponent.class).getPosition().x-textwidth,
+                        entity.getComponent(PositionComponent.class).getPosition().y);
                 break;
         }
     }

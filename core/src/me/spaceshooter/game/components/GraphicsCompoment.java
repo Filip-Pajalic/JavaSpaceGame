@@ -21,6 +21,9 @@ public class GraphicsCompoment extends Component {
     private int sizeX = 0; //radius
     private int sizeY = 0;
 
+    private boolean filled = false;
+    private Color filledColor = null;
+
     @Override
     public void update(float dt) {
 
@@ -65,6 +68,15 @@ public class GraphicsCompoment extends Component {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public void setFilled(Color color){
+        filled = true;
+        filledColor = color;
+    }
+
+    public Color getFilledColor(){
+        return this.filledColor;
     }
 
 }

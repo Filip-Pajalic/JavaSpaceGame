@@ -2,8 +2,10 @@ package me.spaceshooter.game.systems;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -59,8 +61,11 @@ public class RenderSystem extends GameSystem {
         this.batch.begin();
         this.batch.draw(backgroundGraphics.getTexture(), backgroundPosition.getPosition().x, backgroundPosition.getPosition().y, backgroundGraphics.getSizeX(), backgroundGraphics.getSizeY());
         this.batch.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         renderShape(entityList);
         renderTextures(entityList);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
         this.gameUi.update(dt);
     }
 
@@ -78,39 +83,48 @@ public class RenderSystem extends GameSystem {
         this.batch.end();
     }
 
-    public void renderShape(List<Entity> entityList){
+    public void renderShape(List<Entity> entityList) {
+        this.shapeRenderer.setAutoShapeType(true);
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(Entity entity : entityList){
+
+        for (Entity entity : entityList) {
             GraphicsCompoment entityGraphics = entity.getComponent(GraphicsCompoment.class);
             PositionComponent entityPosition = entity.getComponent(PositionComponent.class);
             CollisionComponent entityCollision = entity.getComponent(CollisionComponent.class);
-            if(entityGraphics != null && entityPosition!=null){
-                if(entityGraphics.getShape() != null){
-                    switch ( entityGraphics.getShape()){
+            if (entityGraphics != null && entityPosition != null) {
+                if (entityGraphics.getShape() != null) {
+                    switch (entityGraphics.getShape()) {
                         case CIRCLE:
-                            this.shapeRenderer.circle(entityPosition.getPosition().x,entityPosition.getPosition().y,entityGraphics.getSizeX());
+                            this.shapeRenderer.setColor(entityGraphics.getColor());
+                            this.shapeRenderer.circle(entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX());
+                            if(entityGraphics.getFilledColor() != null){
+                                this.shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+                                this.shapeRenderer.setColor(entityGraphics.getFilledColor());
+                                this.shapeRenderer.circle(entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX());
+
+                                this.shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+                            }
                             break;
                         case RECANGLE:
-                            this.shapeRenderer.rect(entityPosition.getPosition().x,entityPosition.getPosition().y,entityGraphics.getSizeX(),entityGraphics.getSizeY());
+                            this.shapeRenderer.rect(entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX(), entityGraphics.getSizeY());
                             break;
                     }
-                    this.shapeRenderer.setColor(entityGraphics.getColor());
                 }
             }
             //draw hitboxes
-            if(Constants.DEBUG && entityCollision != null && entityPosition!=null){
-                if(entityCollision.getCircle() == null && entityCollision.getRect() != null)
-                {
-                    this.shapeRenderer.rect(entityPosition.getPosition().x,entityPosition.getPosition().y,entityCollision.getRect().width,entityCollision.getRect().height);
-                }
-                else if(entityCollision.getRect() == null && entityCollision.getCircle() != null){
-                    this.shapeRenderer.circle(entityPosition.getPosition().x,entityPosition.getPosition().y,entityCollision.getCircle().radius);
-                }
+            if (Constants.DEBUG && entityCollision != null && entityPosition != null) {
                 this.shapeRenderer.setColor(Color.RED);
+                if (entityCollision.getCircle() == null && entityCollision.getRect() != null) {
+                    this.shapeRenderer.rect(entityPosition.getPosition().x, entityPosition.getPosition().y, entityCollision.getRect().width, entityCollision.getRect().height);
+                } else if (entityCollision.getRect() == null && entityCollision.getCircle() != null) {
+                    this.shapeRenderer.circle(entityPosition.getPosition().x, entityPosition.getPosition().y, entityCollision.getCircle().radius);
+                }
+
 
             }
         }
         this.shapeRenderer.end();
+
     }
 
     @Override

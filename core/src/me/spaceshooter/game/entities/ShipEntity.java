@@ -11,6 +11,7 @@ import me.spaceshooter.game.components.CollisionComponent;
 import me.spaceshooter.game.components.GraphicsCompoment;
 import me.spaceshooter.game.components.InputComponent;
 import me.spaceshooter.game.components.PositionComponent;
+import me.spaceshooter.game.components.ScoreComponent;
 import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 
@@ -50,5 +51,9 @@ public class ShipEntity extends Entity {
         //Collision
         addComponent(new CollisionComponent());
         getComponent(CollisionComponent.class).setShapeRect(new Rectangle(spawnPosition.x,spawnPosition.y,dimension.x,dimension.y));
+
+        //Score
+        addComponent(new ScoreComponent());
+        getComponent(ScoreComponent.class).setScore(0);
     }
 }
