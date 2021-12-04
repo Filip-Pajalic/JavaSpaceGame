@@ -1,38 +1,32 @@
-Untitled
+thrust
 - Delay -
-active: true
-lowMin: 1.0
-lowMax: 1.0
+active: false
 - Duration - 
-lowMin: 3000.0
-lowMax: 3000.0
+lowMin: 10000.0
+lowMax: 10000.0
 - Count - 
-min: 100
-max: 3000
+min: 0
+max: 100
 - Emission - 
-lowMin: 200.0
-lowMax: 200.0
-highMin: 3000.0
-highMax: 3000.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: 100.0
+highMax: 100.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Life - 
-lowMin: 200.0
-lowMax: 200.0
-highMin: 1000.0
-highMax: 1000.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: 200.0
+highMax: 200.0
 relative: false
-scalingCount: 3
+scalingCount: 1
 scaling0: 1.0
-scaling1: 1.0
-scaling2: 1.0
-timelineCount: 3
+timelineCount: 1
 timeline0: 0.0
-timeline1: 0.66
-timeline2: 1.0
 independent: false
 - Life Offset - 
 active: false
@@ -64,23 +58,36 @@ scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - X Scale - 
-lowMin: 0.0
-lowMax: 0.0
-highMin: 5.0
-highMax: 5.0
+lowMin: 3.0
+lowMax: 3.0
+highMin: 12.0
+highMax: 12.0
+relative: false
+scalingCount: 3
+scaling0: 0.0
+scaling1: 1.0
+scaling2: 1.0
+timelineCount: 3
+timeline0: 0.0
+timeline1: 0.56164384
+timeline2: 1.0
+- Y Scale - 
+active: true
+lowMin: 5.0
+lowMax: 5.0
+highMin: 17.0
+highMax: 17.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Y Scale - 
-active: false
 - Velocity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 30.0
-highMax: 183.0
+highMin: 200.0
+highMax: 300.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -88,28 +95,24 @@ timelineCount: 1
 timeline0: 0.0
 - Angle - 
 active: true
-lowMin: -90.0
-lowMax: -90.0
-highMin: -80.0
-highMax: -100.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: 270.0
+highMax: 270.0
 relative: false
-scalingCount: 3
+scalingCount: 1
 scaling0: 1.0
-scaling1: 0.0
-scaling2: 0.0
-timelineCount: 3
+timelineCount: 1
 timeline0: 0.0
-timeline1: 0.5
-timeline2: 1.0
 - Rotation - 
 active: true
-lowMin: 1.0
-lowMax: 360.0
-highMin: 180.0
-highMax: 180.0
-relative: true
+lowMin: 0.0
+lowMax: 0.0
+highMin: -360.0
+highMax: 360.0
+relative: false
 scalingCount: 2
-scaling0: 0.0
+scaling0: 1.0
 scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
@@ -134,15 +137,15 @@ relative: false
 scalingCount: 4
 scaling0: 0.0
 scaling1: 1.0
-scaling2: 0.75
+scaling2: 1.0
 scaling3: 0.0
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.2
-timeline2: 0.8
+timeline1: 0.21917808
+timeline2: 0.65068495
 timeline3: 1.0
 - Options - 
-attached: false
+attached: true
 continuous: true
 aligned: false
 additive: true

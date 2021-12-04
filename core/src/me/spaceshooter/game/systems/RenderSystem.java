@@ -23,7 +23,10 @@ import me.spaceshooter.Constants;
 import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.game.components.CollisionComponent;
 import me.spaceshooter.game.components.GraphicsCompoment;
+import me.spaceshooter.game.components.ParticleComponent;
 import me.spaceshooter.game.components.PositionComponent;
+import me.spaceshooter.game.components.PowerComponent;
+import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
 import me.spaceshooter.game.entities.BackgroundEntity;
@@ -77,6 +80,22 @@ public class RenderSystem extends GameSystem {
             if(entityGraphics != null && entityPosition!=null){
                 if(entityGraphics.getTexture() != null) {
                     this.batch.draw(entityGraphics.getTexture(), entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX(), entityGraphics.getSizeY());
+                    PowerComponent entityPower = entity.getComponent(PowerComponent.class);
+                    if(entityPower != null){
+                        //replace this with a loop that gets the name of the power and checks if there is a texture with the name.
+                        if(entityPower.isPower("MainThruster") && entityPower.getTexture("MainThruster") != null){
+                            this.batch.draw(entityPower.getTexture("MainThruster"), entityPosition.getPosition().x, entityPosition.getPosition().y, entityGraphics.getSizeX(), entityGraphics.getSizeY());
+                        }
+                        //replace this with a loop that gets the name of the power and checks if there is a particle with the name.
+                        ParticleComponent entityParticle = entity.getComponent(ParticleComponent.class);
+                        if( entityPower.isPower("MainThruster") && entityParticle != null)
+                        {
+                            entityParticle.getEffect().setPosition(entityPosition.getPosition().x +32,entityPosition.getPosition().y+20);
+                            entityParticle.getEffect().start();
+                            entityParticle.getEffect().draw(batch,Gdx.graphics.getDeltaTime());
+                        }
+
+                    }
                 }
             }
         }

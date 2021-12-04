@@ -24,7 +24,7 @@ public class TargetEntity extends Entity {
     private Vector2 spawnPosition;
 
     private int health;
-    private int radiusHitbox, radius;
+    private int radiusHitbox, radius, oldradius;
 
 
     public TargetEntity(String name) {
@@ -41,12 +41,32 @@ public class TargetEntity extends Entity {
 
     public void randomizeProperties(){
         this.health = MathUtils.random(20,50);
+        this.oldradius = radius;
         setRadius();
-        this.spawnPosition = new Vector2(MathUtils.random(10+this.radius, Constants.WORLD_WIDTH-10-this.radius),
-                MathUtils.random(30+this.radius, Constants.WORLD_HEIGHT-50-this.radius));
+        this.spawnPosition =  randomizePosition();
         getComponent(PositionComponent.class).setPosition(spawnPosition);
         getComponent(CollisionComponent.class).setShapeCircle(new Circle(spawnPosition.x,spawnPosition.y,radiusHitbox));
         getComponent(HealthComponent.class).setHealth(this.health);
+        getComponent(PositionComponent.class).setLastPosition(spawnPosition);
+    }
+
+    public Vector2 randomizePosition(){
+        Vector2 lastPosition = getComponent(PositionComponent.class).getLastPosition();
+        Vector2 tempPosition = new Vector2(lastPosition.x,lastPosition.y);
+        while (CollideCircles(lastPosition,tempPosition,radius,oldradius)){
+            tempPosition.x = MathUtils.random(10+this.radius, Constants.WORLD_WIDTH-10-this.radius);
+            tempPosition.y = MathUtils.random(30+this.radius, Constants.WORLD_HEIGHT-50-this.radius);
+        }
+        return tempPosition;
+    }
+
+    public boolean CollideCircles(Vector2 c1, Vector2 c2, int r1, int r2) {
+        float x = c1.x - c2.x;
+        float y = c1.y - c2.y;
+        float centerDistanceSq = x * x + y * y;
+        float radius = r1 + r2;
+        float radiusSq = radius * radius;
+        return centerDistanceSq <= radiusSq;
     }
 
     public void setRadius(){

@@ -7,6 +7,7 @@ import me.spaceshooter.game.core.Component;
 public class PositionComponent extends Component {
 
     private Vector2 position = new Vector2(0f,0f);
+    private Vector2 lastPosition = new Vector2(0f,0f);
 
 
     @Override
@@ -29,6 +30,14 @@ public class PositionComponent extends Component {
     public void translate(float xChange, float yChange){
         this.position.x = this.position.x + xChange;
         this.position.y = this.position.y + yChange;
+    }
+
+    public void setLastPosition(Vector2 position){
+        this.lastPosition = position;
+    }
+
+    public Vector2 getLastPosition(){
+        return this.lastPosition;
     }
 
 

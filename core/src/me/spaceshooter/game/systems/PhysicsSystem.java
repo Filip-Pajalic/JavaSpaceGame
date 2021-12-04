@@ -18,6 +18,7 @@ import me.spaceshooter.event.subjects.PhysicsSubject;
 import me.spaceshooter.game.components.GraphicsCompoment;
 
 import me.spaceshooter.game.components.PositionComponent;
+import me.spaceshooter.game.components.PowerComponent;
 import me.spaceshooter.game.components.VelocityComponent;
 import me.spaceshooter.game.core.Entity;
 import me.spaceshooter.game.core.GameSystem;
@@ -87,6 +88,10 @@ public class PhysicsSystem extends GameSystem {
                 float yChange = velocity.y*dt;
                 float xChange = velocity.x*dt;
                 entity.getComponent(PositionComponent.class).translate(xChange, yChange);
+                PowerComponent entityPower = entity.getComponent(PowerComponent.class);
+                if(entityPower != null) {
+                    entityPower.setPower("MainThruster",acceleration.y > 0);
+                }
 
                 if(Constants.DEBUGUITEXT ) {
                     event_acceleration.setMessage("Acceleration x: " + String.format("%.2f", acceleration.y) +"    Acceleration y: " + String.format("%.2f", acceleration.x));

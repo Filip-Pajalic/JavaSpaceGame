@@ -15,9 +15,9 @@ public class Entity {
 
     public <T extends Component> T getComponent(Class<T> componentClass){
         for(Component c : componentList) {
-            if (componentClass.isAssignableFrom(c.getClass())) { //vad exakt gör denna
+            if (componentClass.isAssignableFrom(c.getClass())) {
                 try {
-                    return componentClass.cast(c); //hur fungerar cast i java?
+                    return componentClass.cast(c);
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                     assert false : "Error casting component";
