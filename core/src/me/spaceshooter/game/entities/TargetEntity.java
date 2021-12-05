@@ -1,8 +1,10 @@
 package me.spaceshooter.game.entities;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,8 +18,10 @@ import me.spaceshooter.game.components.CollisionComponent;
 import me.spaceshooter.game.components.GraphicsCompoment;
 
 import me.spaceshooter.game.components.HealthComponent;
+import me.spaceshooter.game.components.ParticleComponent;
 import me.spaceshooter.game.components.PositionComponent;
 
+import me.spaceshooter.game.components.PowerComponent;
 import me.spaceshooter.game.core.Entity;
 
 public class TargetEntity extends Entity {
@@ -25,6 +29,7 @@ public class TargetEntity extends Entity {
 
     private int health;
     private int radiusHitbox, radius, oldradius;
+    private float explosionTimer = 1.0f;
 
 
     public TargetEntity(String name) {
@@ -32,14 +37,33 @@ public class TargetEntity extends Entity {
         addComponent(new PositionComponent());
         addComponent(new CollisionComponent());
         addComponent(new HealthComponent());
+        //Power
+        addComponent(new PowerComponent());
+        getComponent(PowerComponent.class).setPower("Explosion", false);
+        //particle
+        addComponent(new ParticleComponent());
+
+
+
         randomizeProperties();
+        getComponent(PowerComponent.class).setPower("Explosion", false);
+
         addComponent(new GraphicsCompoment());
 
         getComponent(GraphicsCompoment.class).setFilled(new Color(1,0,0,0.1f));
         getComponent(GraphicsCompoment.class).setColor(new Color(1,0,0,1));
+
+
+
+
     }
 
     public void randomizeProperties(){
+        if(!getComponent(ParticleComponent.class).getParticleEffectList().isEmpty()) {
+            getComponent(ParticleComponent.class).getParticleEffectList().get(getComponent(ParticleComponent.class).getParticleEffectList().size() - 1).start();
+        }
+        getComponent(PowerComponent.class).setPower("Explosion", true);
+        //getComponent(PowerComponent.class).setPowerTimer("Explosion", explosionTimer);
         this.health = MathUtils.random(20,50);
         this.oldradius = radius;
         setRadius();
@@ -48,6 +72,10 @@ public class TargetEntity extends Entity {
         getComponent(CollisionComponent.class).setShapeCircle(new Circle(spawnPosition.x,spawnPosition.y,radiusHitbox));
         getComponent(HealthComponent.class).setHealth(this.health);
         getComponent(PositionComponent.class).setLastPosition(spawnPosition);
+        getComponent(ParticleComponent.class).addEffect(Gdx.files.internal("targetparticle.p"), Gdx.files.internal(""));
+        getComponent(ParticleComponent.class).getParticleEffectList().get(getComponent(ParticleComponent.class).getParticleEffectList().size()-1).getEmitters()
+                .first().setPosition(getComponent(PositionComponent.class).getPosition().x,getComponent(PositionComponent.class).getPosition().y);
+
     }
 
     public Vector2 randomizePosition(){

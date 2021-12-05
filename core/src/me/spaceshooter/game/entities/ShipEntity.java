@@ -66,6 +66,7 @@ public class ShipEntity extends Entity {
 
         //particle
         addComponent(new ParticleComponent());
-        getComponent(ParticleComponent.class).setEffect(Gdx.files.internal("particle.red"), Gdx.files.internal(""));
+        getComponent(ParticleComponent.class).addEffect(Gdx.files.internal("particle.red"), Gdx.files.internal(""));
+        getComponent(ParticleComponent.class).getParticleEffectList().get(0).start();
     }
 }

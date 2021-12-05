@@ -3,21 +3,36 @@ package me.spaceshooter.game.components;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.spaceshooter.game.core.Component;
 
 public class ParticleComponent extends Component {
 
-    ParticleEffect effect = new ParticleEffect();
+
+    private List<ParticleEffect> particleEffectList = new ArrayList<>();
     @Override
     public void update(float dt) {
 
     }
 
-    public ParticleEffect getEffect() {
-        return this.effect;
+    public void addEffect(FileHandle particle, FileHandle particleTexture) {
+        ParticleEffect pe = new ParticleEffect();
+        pe.load(particle, particleTexture);
+        particleEffectList.add(pe);
     }
 
-    public void setEffect(FileHandle particle, FileHandle particleTexture) {
-        this.effect.load(particle, particleTexture);
+    public List<ParticleEffect> getParticleEffectList(){
+        return particleEffectList;
     }
+
+    public void clearParticleEffect(){
+        for(ParticleEffect pe : particleEffectList){
+            if (pe.isComplete()){
+                particleEffectList.remove(pe);
+            }
+        }
+    }
+
 }
