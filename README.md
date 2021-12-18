@@ -17,20 +17,19 @@ Learning Java by making a game.
 - <strike> Add scoring system </strike>
 - <strike> Ensure targets dont spawn to close to each other </strike>
 - <strike> Add "animation" when flying </strike>
-- <strike>  Add particle effects from target </strike>
+- <strike> Add particle effects from target </strike>
+- <strike> Fix hitboxes properly sized </strike>
 
 Basic:
-- Add particle effects from rockets - sideways as well, loop it  
+- Fix hitbox from above, weird offset
 - Add prevVelocity and prevAcceleration to compare if there is activeForce added.
+- Add particle effects from rockets - sideways as well, loop it
 - Add startmenu
 - Add level + leveltimer and highscore
 - Add entities to collisionlist, so collisions are not checked twice, Collide only once with each unique object
 - Add ControlSupport for phone
 - Fix problem at 0.0 position, fix with collision maybe.
 - fix wobbly render? (scaling problem or positionsmoothing, update physicscode perhaps?
-- Play particles properly, they have a lifespan, use this. ParticleQueue/list
-- Fix hitboxes properly sized
-
 
 
 Improvements:
@@ -52,3 +51,5 @@ Improvements:
 - replace observer with async?
 - Replace edgechecking with infinite scroll and line collision to the ground.
 - Make my own particlesystem
+- Play particles properly, they have a lifespan, use this. ParticleQueue/list
+

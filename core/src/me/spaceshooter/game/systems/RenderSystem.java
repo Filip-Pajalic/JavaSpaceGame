@@ -146,9 +146,9 @@ public class RenderSystem extends GameSystem {
             if (Constants.DEBUG && entityCollision != null && entityPosition != null) {
                 this.shapeRenderer.setColor(Color.RED);
                 if (entityCollision.getCircle() == null && entityCollision.getRect() != null) {
-                    this.shapeRenderer.rect(entityPosition.getPosition().x, entityPosition.getPosition().y, entityCollision.getRect().width, entityCollision.getRect().height);
+                    this.shapeRenderer.rect(entityCollision.getPosition().x, entityCollision.getPosition().y, entityCollision.getRect().width, entityCollision.getRect().height);
                 } else if (entityCollision.getRect() == null && entityCollision.getCircle() != null) {
-                    this.shapeRenderer.circle(entityPosition.getPosition().x, entityPosition.getPosition().y, entityCollision.getCircle().radius);
+                    this.shapeRenderer.circle(entityCollision.getPosition().x, entityCollision.getPosition().y, entityCollision.getCircle().radius);
                 }
 
 

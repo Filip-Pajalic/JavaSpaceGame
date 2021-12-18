@@ -15,6 +15,7 @@ import me.spaceshooter.event.core.Observer;
 import me.spaceshooter.event.core.Subject;
 import me.spaceshooter.event.events.DebugEvent;
 import me.spaceshooter.event.subjects.PhysicsSubject;
+import me.spaceshooter.game.components.CollisionComponent;
 import me.spaceshooter.game.components.GraphicsCompoment;
 
 import me.spaceshooter.game.components.PositionComponent;

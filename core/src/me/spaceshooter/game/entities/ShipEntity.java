@@ -21,15 +21,17 @@ import me.spaceshooter.game.core.Entity;
 public class ShipEntity extends Entity {
 
     private float thrust, velocityMax;
+    private int offsetHitbox;
     private Vector2  dimension, spawnPosition;
 
     public ShipEntity(String name) {
         super(name);
 
-        this.dimension = new Vector2(64,64);
+        this.dimension = new Vector2(32,32);
         this.spawnPosition = new Vector2(100,10);
         this.velocityMax = 80.0f;
         this.thrust = 120.0f;
+        this.offsetHitbox = 0;
 
         //Graphics
         addComponent(new GraphicsCompoment());
@@ -53,7 +55,11 @@ public class ShipEntity extends Entity {
 
         //Collision
         addComponent(new CollisionComponent());
-        getComponent(CollisionComponent.class).setShapeRect(new Rectangle(spawnPosition.x,spawnPosition.y,dimension.x,dimension.y));
+                getComponent(CollisionComponent.class).setShapeRect(new Rectangle(spawnPosition.x
+                ,spawnPosition.y,
+                32,
+                32));
+        getComponent(CollisionComponent.class).setOffset(offsetHitbox);
 
         //Score
         addComponent(new ScoreComponent());

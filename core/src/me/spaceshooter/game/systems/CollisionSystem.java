@@ -33,6 +33,7 @@ public class CollisionSystem extends GameSystem {
 
     @Override
     public void update(List<Entity> entityList , float dt) {
+
         //reset collision
         for(Entity entity : entityList){
             if (entity.getComponent(CollisionComponent.class) != null){
@@ -43,21 +44,23 @@ public class CollisionSystem extends GameSystem {
 
         for (Entity entity : entityList) {
             if (entity.getComponent(CollisionComponent.class) != null) {
+                // update position
+                if (entity.getComponent(PositionComponent.class) != null) {
+                    entity.getComponent(CollisionComponent.class).setPosition(entity.getComponent(PositionComponent.class).getPosition());
+                }
                 for (Entity entity2 : entityList) {
                     if (entity2.getComponent(CollisionComponent.class) != null) {
                         if(!entity2.equals(entity)) {
                             CollisionComponent entityCollision = entity.getComponent(CollisionComponent.class);
                             CollisionComponent entityCollision2 = entity2.getComponent(CollisionComponent.class);
-                            Vector2 entitiyPosition = entity.getComponent(PositionComponent.class).getPosition();
-                            Vector2 entitiyPosition2 = entity2.getComponent(PositionComponent.class).getPosition();
                             Rectangle rect = null;
                             Circle circle = null;
                             if(entityCollision.getCircle() == null && entityCollision2.getCircle() != null){
-                                rect = new Rectangle(entitiyPosition.x,entitiyPosition.y,entityCollision.getRect().width,entityCollision.getRect().height);
-                                circle = new Circle(entitiyPosition2.x,entitiyPosition2.y,entityCollision2.getCircle().radius);
+                                rect = new Rectangle(entityCollision.getPosition().x,entityCollision.getPosition().y,entityCollision.getRect().width,entityCollision.getRect().height);
+                                circle = new Circle(entityCollision2.getPosition().x,entityCollision2.getPosition().y,entityCollision2.getCircle().radius);
                             }else if(entityCollision.getCircle() != null && entityCollision2.getCircle() == null){
-                                rect = new Rectangle(entitiyPosition2.x,entitiyPosition2.y,entityCollision2.getRect().width,entityCollision2.getRect().height);
-                                circle = new Circle(entitiyPosition.x,entitiyPosition.y,entityCollision.getCircle().radius);
+                                rect = new Rectangle(entityCollision2.getPosition().x,entityCollision2.getPosition().y,entityCollision2.getRect().width,entityCollision2.getRect().height);
+                                circle = new Circle(entityCollision.getPosition().x,entityCollision.getPosition().y,entityCollision.getCircle().radius);
                             }
                             if(rect != null && circle != null ) {
                                 if (detectCollisionCircleRect(rect, circle)) {
